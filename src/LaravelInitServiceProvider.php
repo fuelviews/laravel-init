@@ -24,7 +24,7 @@ class LaravelInitServiceProvider extends PackageServiceProvider
             ->hasAssets();
 
         $this->publishes([
-            __DIR__.'/../resources/vite.config.js' => base_path('vite.config.js'),
+            __DIR__.'/../resources/stubs/vite.config.js' => base_path('vite.config.js'),
         ], 'vite-config');
     }
 }

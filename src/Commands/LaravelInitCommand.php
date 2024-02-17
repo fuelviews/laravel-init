@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\File;
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\comment;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class LaravelInitCommand extends Command
 {
@@ -20,7 +22,7 @@ class LaravelInitCommand extends Command
         if (File::exists(base_path('vite.config.js'))) {
             // Confirm overwrite if file exists
             if (confirm(
-                label: 'vite.config.js already exists. Do you want to overwrite it?',
+                label: 'Vite.config.js already exists. Do you want to overwrite it?',
                 default: false
             )) {
                 $this->publishViteConfig('overwrite');
@@ -30,11 +32,41 @@ class LaravelInitCommand extends Command
         } else {
             // Confirm installation if file doesn't exist
             if (confirm(
-                label: 'vite.config.js does not exist. Would you like to install it now?',
+                label: 'Vite.config.js does not exist. Would you like to install it now?',
                 default: true,
             )) {
                 $this->publishViteConfig('install');
             }
+        }
+
+        // Check if the Filament package is already installed
+        $isFilamentInstalled = false;
+
+        // Get the list of installed packages using Composer
+        $composerJson = json_decode(file_get_contents(base_path('composer.json')), true);
+        $installedPackages = array_keys($composerJson['require']);
+
+        // Check if Filament is among the installed packages
+        if (in_array('filament/filament', $installedPackages)) {
+            $isFilamentInstalled = true;
+        }
+
+        if ($isFilamentInstalled) {
+            if (confirm(
+                label: 'FilamentPHP is installed. Do you want to overwrite Filament?',
+                default: false
+            )) {
+                $this->installFilament();
+            } else {
+                $this->warn('Skipping FilamentPHP installation.');
+            }
+        } else {
+            if (!$isFilamentInstalled && confirm(
+                label: 'FilamentPHP is not installed. Do you want to install Filament?',
+                default: true
+            ));
+            $this->installFilament();
+            $this->info('FilamentPHP installed.');
         }
 
         $this->comment('All done');
@@ -44,7 +76,7 @@ class LaravelInitCommand extends Command
 
     protected function publishViteConfig($action)
     {
-        $stubPath = __DIR__ . '/../../resources/vite.config.js';
+        $stubPath = __DIR__ . '/../../resources/stubs/vite.config.js';
         $destinationPath = base_path('vite.config.js');
 
         if ($action === 'overwrite') {
@@ -52,9 +84,36 @@ class LaravelInitCommand extends Command
         }
 
         if (File::copy($stubPath, $destinationPath)) {
-            $this->info('vite.config.js has been ' . ($action === 'overwrite' ? 'overwritten' : 'published') . ' successfully.');
+            $this->info('Vite.config.js has been ' . ($action === 'overwrite' ? 'overwritten' : 'published') . ' successfully.');
         } else {
             $this->error('Failed to publish vite.config.js.');
         }
+    }
+
+    protected function installFilament()
+    {
+        $this->info('Installing FilamentPHP...');
+
+        // Run the composer require command to install Filament
+        $composerProcess = Process::fromShellCommandline('composer require filament/filament:^3.2 -W', null, null, null, null);
+        $composerProcess->run();
+
+        // Check if the command failed
+        if (!$composerProcess->isSuccessful()) {
+            throw new ProcessFailedException($composerProcess);
+        }
+
+        $this->info($composerProcess->getOutput());
+
+        // Run the composer require command to install Filament
+        if (!file_exists(config_path('filament.php'))) {
+            $composerProcess = Process::fromShellCommandline('php artisan vendor:publish --tag=filament-config', null, null, null, null);
+            $composerProcess->run();
+        } else {
+            $this->info('Filament configuration file already exists.');
+        }
+
+        $this->info($composerProcess->getOutput());
+
     }
 }
