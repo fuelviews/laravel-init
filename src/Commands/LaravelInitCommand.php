@@ -4,11 +4,10 @@ namespace Fuelviews\LaravelInit\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
+
 use function Laravel\Prompts\confirm;
-use function Laravel\Prompts\info;
-use function Laravel\Prompts\comment;
 
 class LaravelInitCommand extends Command
 {
@@ -19,37 +18,37 @@ class LaravelInitCommand extends Command
     public function handle(): int
     {
         // Check if vite.config.js already exists
-/*        if (File::exists(base_path('vite.config.js'))) {
-            // Confirm overwrite if file exists
-            if (confirm(
-                label: 'Vite.config.js already exists. Do you want to overwrite it?',
-                default: false
-            )) {
-                $this->publishViteConfig('overwrite');
-            } else {
-                $this->warn('Skipping vite.config.js installation.');
-            }
-        } else {
-            // Confirm installation if file doesn't exist
-            if (confirm(
-                label: 'Vite.config.js does not exist. Would you like to install it now?',
-                default: true,
-            )) {
-                $this->publishViteConfig('install');
-            }
-        }*/
+        /*        if (File::exists(base_path('vite.config.js'))) {
+                    // Confirm overwrite if file exists
+                    if (confirm(
+                        label: 'Vite.config.js already exists. Do you want to overwrite it?',
+                        default: false
+                    )) {
+                        $this->publishViteConfig('overwrite');
+                    } else {
+                        $this->warn('Skipping vite.config.js installation.');
+                    }
+                } else {
+                    // Confirm installation if file doesn't exist
+                    if (confirm(
+                        label: 'Vite.config.js does not exist. Would you like to install it now?',
+                        default: true,
+                    )) {
+                        $this->publishViteConfig('install');
+                    }
+                }*/
 
         $this->publishConfig('vite.config.js');
         $this->publishConfig('tailwind.config.js');
         $this->publishConfig('postcss.config.js');
 
         $devDependenciesToCheck = [
-            "@tailwindcss/forms",
-            "@tailwindcss/typography",
-            "autoprefixer",
-            "postcss",
-            "dotenv",
-            "tailwindcss",
+            '@tailwindcss/forms',
+            '@tailwindcss/typography',
+            'autoprefixer',
+            'postcss',
+            'dotenv',
+            'tailwindcss',
         ];
 
         $packageJsonPath = base_path('package.json');
@@ -57,7 +56,7 @@ class LaravelInitCommand extends Command
         $packageJson = json_decode($packageJsonContent, true);
 
         foreach ($devDependenciesToCheck as $packageName) {
-            if (!isset($packageJson['devDependencies'][$packageName])) {
+            if (! isset($packageJson['devDependencies'][$packageName])) {
                 if (confirm("{$packageName} is not installed. Do you want to install it now?", true)) {
                     $this->installNodePackage($packageName, true);
                 }
@@ -88,10 +87,10 @@ class LaravelInitCommand extends Command
                 $this->warn('Skipping FilamentPHP installation.');
             }
         } else {
-            if (!$isFilamentInstalled && confirm(
-                    label: 'FilamentPHP is not installed. Do you want to install FilamentPHP?',
-                    default: true
-                ));
+            if (! $isFilamentInstalled && confirm(
+                label: 'FilamentPHP is not installed. Do you want to install FilamentPHP?',
+                default: true
+            ));
             $this->installFilament();
             $this->info('FilamentPHP installed successfully.');
         }
@@ -103,7 +102,7 @@ class LaravelInitCommand extends Command
 
     protected function publishViteConfig($action)
     {
-        $stubPath = __DIR__ . '/../../resources/stubs/vite.config.js';
+        $stubPath = __DIR__.'/../../resources/stubs/vite.config.js';
         $destinationPath = base_path('vite.config.js');
 
         if ($action === 'overwrite') {
@@ -111,7 +110,7 @@ class LaravelInitCommand extends Command
         }
 
         if (File::copy($stubPath, $destinationPath)) {
-            $this->info('Vite.config.js has been ' . ($action === 'overwrite' ? 'overwritten' : 'installed') . ' successfully.');
+            $this->info('Vite.config.js has been '.($action === 'overwrite' ? 'overwritten' : 'installed').' successfully.');
         } else {
             $this->error('Failed to install vite.config.js.');
         }
@@ -119,7 +118,7 @@ class LaravelInitCommand extends Command
 
     protected function publishConfig($configFileName)
     {
-        $stubPath = __DIR__ . "/../../resources/stubs/{$configFileName}";
+        $stubPath = __DIR__."/../../resources/stubs/{$configFileName}";
         $destinationPath = base_path($configFileName);
 
         // Check if config file already exists
@@ -173,7 +172,7 @@ class LaravelInitCommand extends Command
             $this->output->write($buffer);
         });
 
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
 
@@ -189,7 +188,7 @@ class LaravelInitCommand extends Command
         $composerProcess->run();
 
         // Run the composer require command to install Filament
-        if (!file_exists(config_path('filament.php'))) {
+        if (! file_exists(config_path('filament.php'))) {
             $composerProcess = Process::fromShellCommandline('php artisan vendor:publish --tag=filament-config', null, null, null, null);
             $composerProcess->run();
         } else {
@@ -207,7 +206,7 @@ class LaravelInitCommand extends Command
         });
 
         // Check if the command failed
-        if (!$composerProcess->isSuccessful()) {
+        if (! $composerProcess->isSuccessful()) {
             throw new ProcessFailedException($composerProcess);
         }
 
@@ -222,7 +221,7 @@ class LaravelInitCommand extends Command
         });
 
         // Check if the command failed
-        if (!$composerProcess->isSuccessful()) {
+        if (! $composerProcess->isSuccessful()) {
             throw new ProcessFailedException($composerProcess);
         }
 
