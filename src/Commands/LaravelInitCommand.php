@@ -4,11 +4,11 @@ namespace Fuelviews\LaravelInit\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\comment;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class LaravelInitCommand extends Command
 {
@@ -19,7 +19,7 @@ class LaravelInitCommand extends Command
     public function handle(): int
     {
         // Check if vite.config.js already exists
-        if (File::exists(base_path('vite.config.js'))) {
+/*        if (File::exists(base_path('vite.config.js'))) {
             // Confirm overwrite if file exists
             if (confirm(
                 label: 'Vite.config.js already exists. Do you want to overwrite it?',
@@ -37,6 +37,33 @@ class LaravelInitCommand extends Command
             )) {
                 $this->publishViteConfig('install');
             }
+        }*/
+
+        $this->publishConfig('vite.config.js');
+        $this->publishConfig('tailwind.config.js');
+        $this->publishConfig('postcss.config.js');
+
+        $devDependenciesToCheck = [
+            "@tailwindcss/forms",
+            "@tailwindcss/typography",
+            "autoprefixer",
+            "postcss",
+            "dotenv",
+            "tailwindcss",
+        ];
+
+        $packageJsonPath = base_path('package.json');
+        $packageJsonContent = File::get($packageJsonPath);
+        $packageJson = json_decode($packageJsonContent, true);
+
+        foreach ($devDependenciesToCheck as $packageName) {
+            if (!isset($packageJson['devDependencies'][$packageName])) {
+                if (confirm("{$packageName} is not installed. Do you want to install it now?", true)) {
+                    $this->installNodePackage($packageName, true);
+                }
+            } else {
+                $this->comment("{$packageName} is already installed.");
+            }
         }
 
         // Check if the Filament package is already installed
@@ -53,7 +80,7 @@ class LaravelInitCommand extends Command
 
         if ($isFilamentInstalled) {
             if (confirm(
-                label: 'FilamentPHP is installed. Do you want to overwrite Filament?',
+                label: 'FilamentPHP is installed. Do you want to overwrite FilamentPHP installation?',
                 default: false
             )) {
                 $this->installFilament();
@@ -62,14 +89,14 @@ class LaravelInitCommand extends Command
             }
         } else {
             if (!$isFilamentInstalled && confirm(
-                label: 'FilamentPHP is not installed. Do you want to install Filament?',
-                default: true
-            ));
+                    label: 'FilamentPHP is not installed. Do you want to install FilamentPHP?',
+                    default: true
+                ));
             $this->installFilament();
-            $this->info('FilamentPHP installed.');
+            $this->info('FilamentPHP installed successfully.');
         }
 
-        $this->comment('All done');
+        $this->info('All done');
 
         return self::SUCCESS;
     }
@@ -84,10 +111,73 @@ class LaravelInitCommand extends Command
         }
 
         if (File::copy($stubPath, $destinationPath)) {
-            $this->info('Vite.config.js has been ' . ($action === 'overwrite' ? 'overwritten' : 'published') . ' successfully.');
+            $this->info('Vite.config.js has been ' . ($action === 'overwrite' ? 'overwritten' : 'installed') . ' successfully.');
         } else {
-            $this->error('Failed to publish vite.config.js.');
+            $this->error('Failed to install vite.config.js.');
         }
+    }
+
+    protected function publishConfig($configFileName)
+    {
+        $stubPath = __DIR__ . "/../../resources/stubs/{$configFileName}";
+        $destinationPath = base_path($configFileName);
+
+        // Check if config file already exists
+        if (File::exists($destinationPath)) {
+            // Confirm overwrite if file exists
+            if (confirm("{$configFileName} already exists. Do you want to overwrite it?", false)) {
+                File::copy($stubPath, $destinationPath);
+                $this->info("{$configFileName} has been overwritten successfully.");
+            } else {
+                $this->warn("Skipping {$configFileName} installation.");
+            }
+        } else {
+            // Confirm installation if file doesn't exist
+            if (confirm("{$configFileName} does not exist. Would you like to install it now?", true)) {
+                File::copy($stubPath, $destinationPath);
+                $this->info("{$configFileName} has been installed successfully.");
+            }
+        }
+    }
+
+    protected function detectPackageManager(): string
+    {
+        if (File::exists(base_path('yarn.lock'))) {
+            return 'yarn';
+        } elseif (File::exists(base_path('package-lock.json'))) {
+            return 'npm';
+        } else {
+            // Default to npm if unable to determine
+            return 'npm';
+        }
+    }
+
+    protected function installNodePackage($packageName, $isDev = false)
+    {
+        $this->info("Installing {$packageName}...");
+
+        $packageManager = $this->detectPackageManager();
+
+        // Adjust command for multiple packages if $packageName is an array
+        $packageInstallString = is_array($packageName) ? implode(' ', $packageName) : $packageName;
+        $devFlag = $isDev ? ($packageManager === 'yarn' ? ' --dev' : ' --save-dev') : '';
+
+        $command = $packageManager === 'yarn' ?
+            "yarn add {$packageInstallString}{$devFlag}" :
+            "npm install {$packageInstallString}{$devFlag}";
+
+        // Execute the command
+        $process = Process::fromShellCommandline($command, null, null, STDIN, null);
+        $process->setTty(Process::isTtySupported());
+        $process->run(function ($type, $buffer) {
+            $this->output->write($buffer);
+        });
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        $this->info("{$packageName} installed successfully.");
     }
 
     protected function installFilament()
@@ -97,13 +187,6 @@ class LaravelInitCommand extends Command
         // Run the composer require command to install Filament
         $composerProcess = Process::fromShellCommandline('composer require filament/filament:^3.2 -W', null, null, null, null);
         $composerProcess->run();
-
-        // Check if the command failed
-        if (!$composerProcess->isSuccessful()) {
-            throw new ProcessFailedException($composerProcess);
-        }
-
-        $this->info($composerProcess->getOutput());
 
         // Run the composer require command to install Filament
         if (!file_exists(config_path('filament.php'))) {
@@ -115,5 +198,34 @@ class LaravelInitCommand extends Command
 
         $this->info($composerProcess->getOutput());
 
+        // Running the command interactively
+        $command = 'php artisan filament:install --panels';
+        $process = new Process(explode(' ', $command), base_path(), null, STDIN, null);
+        $process->setTty(Process::isTtySupported());
+        $process->run(function ($type, $buffer) {
+            echo $buffer;
+        });
+
+        // Check if the command failed
+        if (!$composerProcess->isSuccessful()) {
+            throw new ProcessFailedException($composerProcess);
+        }
+
+        $this->info($composerProcess->getOutput());
+
+        // Running the command interactively
+        $command = 'php artisan make:filament-user';
+        $process = new Process(explode(' ', $command), base_path(), null, STDIN, null);
+        $process->setTty(Process::isTtySupported());
+        $process->run(function ($type, $buffer) {
+            echo $buffer;
+        });
+
+        // Check if the command failed
+        if (!$composerProcess->isSuccessful()) {
+            throw new ProcessFailedException($composerProcess);
+        }
+
+        $this->info($composerProcess->getOutput());
     }
 }
