@@ -20,6 +20,11 @@ class LaravelInitServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasMigration('create_laravel-init_table')
-            ->hasCommand(LaravelInitCommand::class);
+            ->hasCommand(LaravelInitCommand::class)
+            ->hasAssets();
+
+        $this->publishes([
+            __DIR__.'/../resources/vite.config.js' => base_path('vite.config.js'),
+        ], 'laravel-init-config');
     }
 }
