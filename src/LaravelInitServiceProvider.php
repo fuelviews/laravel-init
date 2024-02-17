@@ -2,9 +2,9 @@
 
 namespace Fuelviews\LaravelInit;
 
+use Fuelviews\LaravelInit\Commands\LaravelInitCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Fuelviews\LaravelInit\Commands\LaravelInitCommand;
 
 class LaravelInitServiceProvider extends PackageServiceProvider
 {

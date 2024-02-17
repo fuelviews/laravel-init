@@ -2,9 +2,9 @@
 
 namespace Fuelviews\LaravelInit\Tests;
 
+use Fuelviews\LaravelInit\LaravelInitServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Fuelviews\LaravelInit\LaravelInitServiceProvider;
 
 class TestCase extends Orchestra
 {
