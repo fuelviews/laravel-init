@@ -25,6 +25,6 @@ class LaravelInitServiceProvider extends PackageServiceProvider
 
         $this->publishes([
             __DIR__.'/../resources/vite.config.js' => base_path('vite.config.js'),
-        ], 'laravel-init-config');
+        ], 'vite-config');
     }
 }
