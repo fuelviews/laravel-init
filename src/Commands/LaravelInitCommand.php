@@ -106,28 +106,28 @@ class LaravelInitCommand extends Command
 
     protected function publishAppCss()
     {
-        $stubPath = __DIR__ . "/../../resources/stubs/css/app.css";
+        $stubPath = __DIR__.'/../../resources/stubs/css/app.css';
         $destinationPath = resource_path('css/app.css');
 
         // Check if the directory exists, if not create it
-        if (!File::exists(dirname($destinationPath))) {
+        if (! File::exists(dirname($destinationPath))) {
             File::makeDirectory(dirname($destinationPath), 0755, true);
         }
 
         // Check if app.css already exists
         if (File::exists($destinationPath)) {
             // Confirm overwrite if file exists
-            if ($this->confirm("The css/app.css file already exists. Do you want to overwrite it?", false)) {
+            if ($this->confirm('The css/app.css file already exists. Do you want to overwrite it?', false)) {
                 File::copy($stubPath, $destinationPath);
-                $this->info("The css/app.css file has been overwritten successfully.");
+                $this->info('The css/app.css file has been overwritten successfully.');
             } else {
-                $this->warn("Skipping css/app.css installation.");
+                $this->warn('Skipping css/app.css installation.');
             }
         } else {
             // Confirm installation if file doesn't exist
-            if ($this->confirm("The css/app.css file does not exist. Would you like to install it now?", true)) {
+            if ($this->confirm('The css/app.css file does not exist. Would you like to install it now?', true)) {
                 File::copy($stubPath, $destinationPath);
-                $this->info("The css/app.css file has been installed successfully.");
+                $this->info('The css/app.css file has been installed successfully.');
             }
         }
     }
