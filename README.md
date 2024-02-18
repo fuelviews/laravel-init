@@ -36,6 +36,24 @@ You can publish the config file with:
 php artisan vendor:publish --tag="laravel-init-config"
 ```
 
+You can publish the vite config file with:
+
+```bash
+php artisan vendor:publish --tag="laravel-init-vite-config"
+```
+
+You can publish the tailwindcss config file with:
+
+```bash
+php artisan vendor:publish --tag="laravel-init-tailwindcss-config"
+```
+
+You can publish the config file with:
+
+```bash
+php artisan vendor:publish --tag="laravel-init-postcss-config"
+```
+
 This is the contents of the published config file:
 
 ```php
