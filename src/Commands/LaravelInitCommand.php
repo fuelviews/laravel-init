@@ -17,30 +17,11 @@ class LaravelInitCommand extends Command
 
     public function handle(): int
     {
-        // Check if vite.config.js already exists
-        /*        if (File::exists(base_path('vite.config.js'))) {
-                    // Confirm overwrite if file exists
-                    if (confirm(
-                        label: 'Vite.config.js already exists. Do you want to overwrite it?',
-                        default: false
-                    )) {
-                        $this->publishViteConfig('overwrite');
-                    } else {
-                        $this->warn('Skipping vite.config.js installation.');
-                    }
-                } else {
-                    // Confirm installation if file doesn't exist
-                    if (confirm(
-                        label: 'Vite.config.js does not exist. Would you like to install it now?',
-                        default: true,
-                    )) {
-                        $this->publishViteConfig('install');
-                    }
-                }*/
-
         $this->publishConfig('vite.config.js');
         $this->publishConfig('tailwind.config.js');
         $this->publishConfig('postcss.config.js');
+
+        $this->publishAppCss();
 
         $devDependenciesToCheck = [
             '@tailwindcss/forms',
@@ -100,22 +81,6 @@ class LaravelInitCommand extends Command
         return self::SUCCESS;
     }
 
-    protected function publishViteConfig($action)
-    {
-        $stubPath = __DIR__.'/../../resources/stubs/vite.config.js';
-        $destinationPath = base_path('vite.config.js');
-
-        if ($action === 'overwrite') {
-            $this->warn('Overwriting existing vite.config.js file.');
-        }
-
-        if (File::copy($stubPath, $destinationPath)) {
-            $this->info('Vite.config.js has been '.($action === 'overwrite' ? 'overwritten' : 'installed').' successfully.');
-        } else {
-            $this->error('Failed to install vite.config.js.');
-        }
-    }
-
     protected function publishConfig($configFileName)
     {
         $stubPath = __DIR__."/../../resources/stubs/{$configFileName}";
@@ -135,6 +100,34 @@ class LaravelInitCommand extends Command
             if (confirm("{$configFileName} does not exist. Would you like to install it now?", true)) {
                 File::copy($stubPath, $destinationPath);
                 $this->info("{$configFileName} has been installed successfully.");
+            }
+        }
+    }
+
+    protected function publishAppCss()
+    {
+        $stubPath = __DIR__ . "/../../resources/stubs/css/app.css";
+        $destinationPath = resource_path('css/app.css');
+
+        // Check if the directory exists, if not create it
+        if (!File::exists(dirname($destinationPath))) {
+            File::makeDirectory(dirname($destinationPath), 0755, true);
+        }
+
+        // Check if app.css already exists
+        if (File::exists($destinationPath)) {
+            // Confirm overwrite if file exists
+            if ($this->confirm("The css/app.css file already exists. Do you want to overwrite it?", false)) {
+                File::copy($stubPath, $destinationPath);
+                $this->info("The css/app.css file has been overwritten successfully.");
+            } else {
+                $this->warn("Skipping css/app.css installation.");
+            }
+        } else {
+            // Confirm installation if file doesn't exist
+            if ($this->confirm("The css/app.css file does not exist. Would you like to install it now?", true)) {
+                File::copy($stubPath, $destinationPath);
+                $this->info("The css/app.css file has been installed successfully.");
             }
         }
     }
