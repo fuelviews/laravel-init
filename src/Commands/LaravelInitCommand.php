@@ -9,6 +9,7 @@ use Symfony\Component\Process\Process;
 class LaravelInitCommand extends Command
 {
     protected $signature = 'laravel-init:install {--force : Overwrite any existing files}';
+
     protected $description = 'Install all Fuelviews packages and run their install commands';
 
     public function __construct()
@@ -65,7 +66,7 @@ class LaravelInitCommand extends Command
             $this->output->write($buffer);
         });
 
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
     }
