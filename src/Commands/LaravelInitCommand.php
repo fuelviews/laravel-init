@@ -20,14 +20,14 @@ class LaravelInitCommand extends Command
     public function handle()
     {
         $packages = [
-            'fuelviews/laravel-cloudflare-cache' => '^0.0.3',
-            'fuelviews/laravel-robots-txt' => '^0.0.1',
-            'fuelviews/laravel-sitemap' => '^0.0.2',
-            'fuelviews/laravel-tailwindcss' => '^0.0.2',
-            'fuelviews/laravel-vite' => '^0.0.1',
-            'fuelviews/laravel-navigation' => '0.0.4',
-            'fuelviews/laravel-cpanel-auto-deploy' => '0.0.9',
-            'spatie/laravel-medialibrary' => '^11.5.4',
+            'fuelviews/laravel-cloudflare-cache' => '^0.0',
+            'fuelviews/laravel-robots-txt' => '^0.0',
+            'fuelviews/laravel-sitemap' => '^0.0',
+            'fuelviews/laravel-tailwindcss' => '^0.0',
+            'fuelviews/laravel-vite' => '^0.0',
+            'fuelviews/laravel-navigation' => '^0.0',
+            'fuelviews/laravel-cpanel-auto-deploy' => '^0.0',
+            'spatie/laravel-medialibrary' => '^11.0',
         ];
 
         $requireCommand = 'composer require';
