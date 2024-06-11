@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v0.0.3 - 2024-06-11
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v0.0.2...v0.0.3
+
 ## v0.0.2 - 2024-06-10
 
 ### What's Changed
