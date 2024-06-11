@@ -25,8 +25,9 @@ class LaravelInitCommand extends Command
             'fuelviews/laravel-sitemap' => '^0.0',
             'fuelviews/laravel-tailwindcss' => '^0.0',
             'fuelviews/laravel-vite' => '^0.0',
-            'fuelviews/laravel-navigation' => '^0.0',
             'fuelviews/laravel-cpanel-auto-deploy' => '^0.0',
+            'fuelviews/laravel-navigation' => '^0.0',
+            'fuelviews/laravel-forms' => '^0.0',
             'spatie/laravel-medialibrary' => '^11.0',
         ];
 
@@ -50,6 +51,8 @@ class LaravelInitCommand extends Command
         $this->runShellCommand('php artisan vite:install');
         $this->runShellCommand('php artisan tailwindcss:install');
         $this->runShellCommand('php artisan deploy:install');
+        $this->runShellCommand('php artisan navigation:install');
+        $this->runShellCommand('php artisan forms:install');
 
         $this->info('Packages installed successfully.');
     }
