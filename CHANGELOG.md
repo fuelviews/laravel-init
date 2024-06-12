@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v0.0.7 - 2024-06-12
+
+### What's Changed
+
+* Refactored LaravelInitCommand.php to install a new package, layout-wrapper, and rearranged the order of package installations for better organization and readability. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/11
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v0.0.6...v0.0.7
+
 ## v0.0.6 - 2024-06-12
 
 ### What's Changed
