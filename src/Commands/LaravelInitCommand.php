@@ -47,6 +47,7 @@ class LaravelInitCommand extends Command
         $this->runShellCommand("php artisan vendor:publish --tag=cloudflare-cache-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=sitemap-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=navigation-config {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=navigation-logo {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=forms-config {$force}");
 
         $this->runShellCommand('php artisan vite:install');
