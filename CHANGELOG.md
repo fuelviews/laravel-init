@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v0.0.6 - 2024-06-12
+
+### What's Changed
+
+* Update install command add deps by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/10
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v0.0.5...v0.0.6
+
 ## v0.0.5 - 2024-06-12
 
 ### What's Changed
