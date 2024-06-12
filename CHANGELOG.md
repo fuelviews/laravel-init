@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v0.0.5 - 2024-06-12
+
+### What's Changed
+
+* Added fuelviews/laravel-layout-wrapper package to the list of packages in LaravelInitCommand.php. This change was made to include the layout wrapper functionality in the Laravel initialization process. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/9
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v0.0.4...v0.0.5
+
 ## v0.0.4 - 2024-06-12
 
 ### What's Changed
