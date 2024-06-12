@@ -20,6 +20,7 @@ class LaravelInitCommand extends Command
     public function handle()
     {
         $packages = [
+            'fuelviews/laravel-layout-wrapper' => '^0.0',
             'fuelviews/laravel-cloudflare-cache' => '^0.0',
             'fuelviews/laravel-robots-txt' => '^0.0',
             'fuelviews/laravel-sitemap' => '^0.0',
