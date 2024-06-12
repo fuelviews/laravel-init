@@ -52,9 +52,10 @@ class LaravelInitCommand extends Command
 
         $this->runShellCommand('php artisan vite:install');
         $this->runShellCommand('php artisan tailwindcss:install');
-        $this->runShellCommand('php artisan deploy:install');
+        $this->runShellCommand('php artisan layout-wrapper:install');
         $this->runShellCommand('php artisan navigation:install');
         $this->runShellCommand('php artisan forms:install');
+        $this->runShellCommand('php artisan deploy:install');
 
         $this->info('Packages installed successfully.');
     }
@@ -63,10 +64,8 @@ class LaravelInitCommand extends Command
     {
         $process = Process::fromShellCommandline($command);
 
-        // Set the input to the process's standard input, allowing for interaction
         $process->setTty(Process::isTtySupported());
 
-        // Run the process
         $process->run(function ($type, $buffer) {
             $this->output->write($buffer);
         });
