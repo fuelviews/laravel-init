@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v0.0.4 - 2024-06-12
+
+### What's Changed
+
+* Added dependencies for Laravel packages and installed necessary packages for navigation and forms. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/8
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v0.0.3...v0.0.4
+
 ## v0.0.3 - 2024-06-11
 
 **Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v0.0.2...v0.0.3
