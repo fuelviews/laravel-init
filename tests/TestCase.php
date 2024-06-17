@@ -1,8 +1,8 @@
 <?php
 
-namespace Fuelviews\LaravelInit\Tests;
+namespace Fuelviews\Init\Tests;
 
-use Fuelviews\LaravelInit\LaravelInitServiceProvider;
+use Fuelviews\Init\LaravelInitServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 
