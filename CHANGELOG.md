@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v0.0.8 - 2024-06-17
+
+### What's Changed
+
+* Refactored the package name and related code to use init instead of laravel-init for consistency and clarity. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/12
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v0.0.7...v0.0.8
+
 ## v0.0.7 - 2024-06-12
 
 ### What's Changed
