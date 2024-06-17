@@ -1,6 +1,6 @@
 <?php
 
-namespace Fuelviews\LaravelInit;
+namespace Fuelviews\Init;
 
 class LaravelInit
 {
