@@ -1,6 +1,6 @@
 {
     "name": "fuelviews/laravel-init",
-    "description": "Laravel package init starter",
+    "description": "Laravel init package",
     "keywords": [
         "Fuelviews",
         "laravel",
@@ -13,13 +13,12 @@
         {
             "name": "Joshua Mitchener",
             "email": "joshua@fuelviews.com",
+            "homepage": "https://fuelviews.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.2",
-        "illuminate/contracts": "^10.0",
-        "laravel/prompts": "^0.1.16",
         "spatie/laravel-package-tools": "^1.14.0"
     },
     "require-dev": {
@@ -32,12 +31,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Fuelviews\\LaravelInit\\": "src/"
+            "Fuelviews\\Init\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Fuelviews\\LaravelInit\\Tests\\": "tests/",
+            "Fuelviews\\Init\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
@@ -69,10 +68,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Fuelviews\\LaravelInit\\LaravelInitServiceProvider"
+                "Fuelviews\\Init\\LaravelInitServiceProvider"
             ],
             "aliases": {
-                "LaravelInit": "Fuelviews\\LaravelInit\\Facades\\LaravelInit"
+                "LaravelInit": "Fuelviews\\Init\\Facades\\LaravelInit"
             }
         }
     },
