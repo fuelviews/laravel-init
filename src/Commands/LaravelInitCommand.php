@@ -1,6 +1,6 @@
 <?php
 
-namespace Fuelviews\LaravelInit\Commands;
+namespace Fuelviews\Init\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -8,14 +8,9 @@ use Symfony\Component\Process\Process;
 
 class LaravelInitCommand extends Command
 {
-    protected $signature = 'laravel-init:install {--force : Overwrite any existing files}';
+    protected $signature = 'init:install {--force : Overwrite any existing files}';
 
     protected $description = 'Install all Fuelviews packages and run their install commands';
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     public function handle()
     {
@@ -49,13 +44,17 @@ class LaravelInitCommand extends Command
         $this->runShellCommand("php artisan vendor:publish --tag=navigation-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=navigation-logo {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=forms-config {$force}");
+        $this->runShellCommand("php artisan vendor:publish --provider=Spatie\MediaLibrary\MediaLibraryServiceProvider' --tag=medialibrary-migrations {$force}");
 
-        $this->runShellCommand('php artisan vite:install');
-        $this->runShellCommand('php artisan tailwindcss:install');
+        $this->runShellCommand("php artisan vite:install {$force}");
+        $this->runShellCommand("php artisan tailwindcss:install {$force}");
         $this->runShellCommand('php artisan layout-wrapper:install');
         $this->runShellCommand('php artisan navigation:install');
-        $this->runShellCommand('php artisan forms:install');
+        $this->runShellCommand("php artisan forms:install {$force}");
         $this->runShellCommand('php artisan deploy:install');
+
+        $this->runShellCommand("php artisan storage:link {$force}");
+        $this->runShellCommand("php artisan migrate {$force}");
 
         $this->info('Packages installed successfully.');
     }
