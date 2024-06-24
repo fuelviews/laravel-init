@@ -44,7 +44,7 @@ class LaravelInitCommand extends Command
         $this->runShellCommand("php artisan vendor:publish --tag=navigation-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=navigation-logo {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=forms-config {$force}");
-        $this->runShellCommand("php artisan vendor:publish --provider=Spatie\MediaLibrary\MediaLibraryServiceProvider' --tag=medialibrary-migrations {$force}");
+        $this->runShellCommand("php artisan vendor:publish --provider=Spatie\MediaLibrary\MediaLibraryServiceProvider' --tag=medialibrary-migrations");
 
         $this->runShellCommand("php artisan vite:install {$force}");
         $this->runShellCommand("php artisan tailwindcss:install {$force}");
