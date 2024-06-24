@@ -53,7 +53,7 @@ class LaravelInitCommand extends Command
         $this->runShellCommand("php artisan forms:install {$force}");
         $this->runShellCommand('php artisan deploy:install || true');
 
-        $this->runShellCommand("php artisan storage:link");
+        $this->runShellCommand('php artisan storage:link');
         $this->runShellCommand("php artisan migrate {$force}");
 
         $this->info('Packages installed successfully.');
