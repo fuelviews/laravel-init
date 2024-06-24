@@ -44,16 +44,16 @@ class LaravelInitCommand extends Command
         $this->runShellCommand("php artisan vendor:publish --tag=navigation-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=navigation-logo {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=forms-config {$force}");
-        $this->runShellCommand("php artisan vendor:publish --provider='Spatie\MediaLibrary\MediaLibraryServiceProvider' --tag=medialibrary-migrations");
+        $this->runShellCommand("php artisan vendor:publish --provider='Spatie\MediaLibrary\MediaLibraryServiceProvider' --tag=medialibrary-migrations {$force}");
 
         $this->runShellCommand("php artisan vite:install {$force}");
         $this->runShellCommand("php artisan tailwindcss:install {$force}");
         $this->runShellCommand('php artisan layout-wrapper:install');
         $this->runShellCommand('php artisan navigation:install');
         $this->runShellCommand("php artisan forms:install {$force}");
-        $this->runShellCommand('php artisan deploy:install');
+        $this->runShellCommand('php artisan deploy:install || true');
 
-        $this->runShellCommand("php artisan storage:link {$force}");
+        $this->runShellCommand("php artisan storage:link");
         $this->runShellCommand("php artisan migrate {$force}");
 
         $this->info('Packages installed successfully.');
