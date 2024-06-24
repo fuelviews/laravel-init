@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v0.0.11 - 2024-06-24
+
+### What's Changed
+
+* Added a new vendor:publish command for the navigation-spacer tag and added a storage:link command. These changes were made to ensure that the necessary configuration files and assets are published and the storage link is created during the Laravel initialization process. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/15
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v0.0.10...v0.0.11
+
 ## v0.0.10 - 2024-06-24
 
 ### What's Changed
