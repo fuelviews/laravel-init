@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v0.0.10 - 2024-06-24
+
+### What's Changed
+
+* Fix install bugs by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/14
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v0.0.9...v0.0.10
+
 ## v0.0.9 - 2024-06-24
 
 ### What's Changed
