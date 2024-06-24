@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v0.0.9 - 2024-06-24
+
+### What's Changed
+
+* Fix force bug by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/13
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v0.0.8...v0.0.9
+
 ## v0.0.8 - 2024-06-17
 
 ### What's Changed
