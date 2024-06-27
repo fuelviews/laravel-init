@@ -24,6 +24,7 @@ class LaravelInitCommand extends Command
             'fuelviews/laravel-cpanel-auto-deploy' => '^0.0',
             'fuelviews/laravel-navigation' => '^0.0',
             'fuelviews/laravel-forms' => '^0.0',
+            "spatie/laravel-google-fonts" => "^1.4",
             'spatie/laravel-medialibrary' => '^11.0',
         ];
 
@@ -45,6 +46,7 @@ class LaravelInitCommand extends Command
         $this->runShellCommand("php artisan vendor:publish --tag=navigation-logo {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=forms-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --provider='Spatie\MediaLibrary\MediaLibraryServiceProvider' --tag=medialibrary-migrations {$force}");
+        $this->runShellCommand("php artisan vendor:publish --provider='Spatie\GoogleFonts\GoogleFontsServiceProvider' --tag='google-fonts-config' {$force}");
 
         $this->runShellCommand("php artisan vite:install {$force}");
         $this->runShellCommand("php artisan tailwindcss:install {$force}");
