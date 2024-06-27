@@ -24,7 +24,7 @@ class LaravelInitCommand extends Command
             'fuelviews/laravel-cpanel-auto-deploy' => '^0.0',
             'fuelviews/laravel-navigation' => '^0.0',
             'fuelviews/laravel-forms' => '^0.0',
-            "spatie/laravel-google-fonts" => "^1.4",
+            'spatie/laravel-google-fonts' => '^1.4',
             'spatie/laravel-medialibrary' => '^11.0',
         ];
 
