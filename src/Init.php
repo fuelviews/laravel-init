@@ -2,4 +2,4 @@
 
 namespace Fuelviews\Init;
 
-class LaravelInit {}
+class Init {}

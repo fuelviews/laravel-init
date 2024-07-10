@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-class LaravelInitCommand extends Command
+class InitCommand extends Command
 {
     protected $signature = 'init:install {--force : Overwrite any existing files}';
 
@@ -15,7 +15,7 @@ class LaravelInitCommand extends Command
     public function handle()
     {
         $packages = [
-            'fuelviews/laravel-layout-wrapper' => '^0.0',
+            'fuelviews/laravel-layouts-wrapper' => '^0.0',
             'fuelviews/laravel-cloudflare-cache' => '^0.0',
             'fuelviews/laravel-robots-txt' => '^0.0',
             'fuelviews/laravel-sitemap' => '^0.0',
@@ -48,7 +48,7 @@ class LaravelInitCommand extends Command
 
         $this->runShellCommand("php artisan vite:install {$force}");
         $this->runShellCommand("php artisan tailwindcss:install {$force}");
-        $this->runShellCommand('php artisan layout-wrapper:install');
+        $this->runShellCommand('php artisan layouts-wrapper:install');
         $this->runShellCommand('php artisan navigation:install');
         $this->runShellCommand("php artisan forms:install {$force}");
         $this->runShellCommand('php artisan deploy:install || true');
