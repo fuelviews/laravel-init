@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v0.0.12 - 2024-07-10
+
+### What's Changed
+
+* Refactored composer.json to use the correct service provider and facade names, and renamed LaravelInitCommand and related files to InitCommand. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/17
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v0.0.11...v0.0.12
+
 ## v0.0.11 - 2024-06-24
 
 ### What's Changed
