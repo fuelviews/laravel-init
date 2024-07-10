@@ -2,16 +2,16 @@
 
 namespace Fuelviews\Init;
 
-use Fuelviews\Init\Commands\LaravelInitCommand;
+use Fuelviews\Init\Commands\InitCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class LaravelInitServiceProvider extends PackageServiceProvider
+class InitServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
         $package
             ->name('init')
-            ->hasCommand(LaravelInitCommand::class);
+            ->hasCommand(InitCommand::class);
     }
 }

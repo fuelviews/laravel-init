@@ -68,11 +68,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Fuelviews\\Init\\LaravelInitServiceProvider"
-            ],
-            "aliases": {
-                "LaravelInit": "Fuelviews\\Init\\Facades\\LaravelInit"
-            }
+                "Fuelviews\\Init\\InitServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",
