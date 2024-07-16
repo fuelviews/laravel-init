@@ -12,7 +12,7 @@ class InitCommand extends Command
 
     protected $description = 'Install all Fuelviews packages and run their install commands';
 
-    public function handle()
+    public function handle(): void
     {
         $packages = [
             'fuelviews/laravel-layouts-wrapper' => '^0.0',
@@ -24,6 +24,7 @@ class InitCommand extends Command
             'fuelviews/laravel-cpanel-auto-deploy' => '^0.0',
             'fuelviews/laravel-navigation' => '^0.0',
             'fuelviews/laravel-forms' => '^0.0',
+            'ralphjsmit/laravel-seo' => '^1.6',
             'spatie/laravel-medialibrary' => '^11.0',
         ];
 
@@ -44,6 +45,8 @@ class InitCommand extends Command
         $this->runShellCommand("php artisan vendor:publish --tag=navigation-config {$force} && php artisan vendor:publish --tag=navigation-spacer {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=navigation-logo {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=forms-config {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=seo-migrations {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=seo-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --provider='Spatie\MediaLibrary\MediaLibraryServiceProvider' --tag=medialibrary-migrations {$force}");
 
         $this->runShellCommand("php artisan vite:install {$force}");
@@ -59,7 +62,7 @@ class InitCommand extends Command
         $this->info('Packages installed successfully.');
     }
 
-    private function runShellCommand($command)
+    private function runShellCommand($command): void
     {
         $process = Process::fromShellCommandline($command);
 
