@@ -11,6 +11,7 @@ use Symfony\Component\Process\Process;
 class InitCommand extends Command
 {
     protected $signature = 'init:install {--force : Overwrite any existing files}';
+
     protected $description = 'Install Fuelviews packages, install TailwindCSS and Vite';
 
     /**
