@@ -3,24 +3,34 @@
 namespace Fuelviews\Init\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
+use JsonException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
 class InitCommand extends Command
 {
     protected $signature = 'init:install {--force : Overwrite any existing files}';
+    protected $description = 'Install Fuelviews packages, install TailwindCSS and Vite';
 
-    protected $description = 'Install all Fuelviews packages and run their install commands';
-
+    /**
+     * @throws JsonException
+     */
     public function handle(): void
+    {
+        $this->installFuelviewsPackages();
+        $this->installTailwindCss();
+        $this->installVite();
+        $this->info('All packages and dependencies installed successfully.');
+    }
+
+    private function installFuelviewsPackages(): void
     {
         $packages = [
             'fuelviews/laravel-layouts-wrapper' => '^0.0',
             'fuelviews/laravel-cloudflare-cache' => '^0.0',
             'fuelviews/laravel-robots-txt' => '^0.0',
             'fuelviews/laravel-sitemap' => '^0.0',
-            'fuelviews/laravel-tailwindcss' => '^0.0',
-            'fuelviews/laravel-vite' => '^0.0',
             'fuelviews/laravel-cpanel-auto-deploy' => '^0.0',
             'fuelviews/laravel-navigation' => '^0.0',
             'fuelviews/laravel-forms' => '^0.0',
@@ -33,7 +43,7 @@ class InitCommand extends Command
             $requireCommand .= " {$package}:{$version}";
         }
 
-        $this->info('Installing packages...');
+        $this->info('Installing Fuelviews packages...');
         $this->runShellCommand($requireCommand);
 
         $this->info('Running package-specific install commands...');
@@ -45,12 +55,13 @@ class InitCommand extends Command
         $this->runShellCommand("php artisan vendor:publish --tag=navigation-config {$force} && php artisan vendor:publish --tag=navigation-spacer {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=navigation-logo {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=forms-config {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=layouts-wrapper-seeders {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=layouts-wrapper-models {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=layouts-wrapper-welcome {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=seo-migrations {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=seo-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --provider='Spatie\MediaLibrary\MediaLibraryServiceProvider' --tag=medialibrary-migrations {$force}");
 
-        $this->runShellCommand("php artisan vite:install {$force}");
-        $this->runShellCommand("php artisan tailwindcss:install {$force}");
         $this->runShellCommand('php artisan layouts-wrapper:install');
         $this->runShellCommand('php artisan navigation:install');
         $this->runShellCommand("php artisan forms:install {$force}");
@@ -58,8 +69,124 @@ class InitCommand extends Command
 
         $this->runShellCommand('php artisan storage:link');
         $this->runShellCommand("php artisan migrate {$force}");
+    }
 
-        $this->info('Packages installed successfully.');
+    /**
+     * @throws JsonException
+     */
+    private function installTailwindCss(): void
+    {
+        $force = $this->option('force');
+
+        $this->publishConfig('tailwind.config.js', $force);
+        $this->publishConfig('postcss.config.js', $force);
+        $this->publishAppCss($force);
+
+        $devDependencies = [
+            '@tailwindcss/forms',
+            '@tailwindcss/typography',
+            'autoprefixer',
+            'postcss',
+            'tailwindcss',
+        ];
+
+        $this->installNodePackages($devDependencies);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    private function installVite(): void
+    {
+        $this->publishConfig('vite.config.js');
+
+        $devDependencies = [
+            'dotenv',
+            'laravel-vite-plugin',
+            'vite',
+        ];
+
+        $this->installNodePackages($devDependencies);
+    }
+
+    protected function publishConfig(string $configFileName, bool $force = false): void
+    {
+        $stubPath = __DIR__."/../../stubs/$configFileName.stub";
+        $destinationPath = base_path($configFileName);
+
+        if ($force || $this->option('force')) {
+            File::copy($stubPath, $destinationPath);
+            $this->info("$configFileName has been installed or overwritten successfully.");
+        } elseif (File::exists($destinationPath)) {
+            if ($this->confirm("$configFileName already exists. Do you want to overwrite it?", false)) {
+                File::copy($stubPath, $destinationPath);
+                $this->info("$configFileName has been overwritten successfully.");
+            } else {
+                $this->warn("Skipping $configFileName installation.");
+            }
+        } else {
+            File::copy($stubPath, $destinationPath);
+            $this->info("$configFileName has been installed successfully.");
+        }
+    }
+
+    protected function publishAppCss(bool $force): void
+    {
+        $stubPath = __DIR__.'/../../stubs/css/app.css.stub';
+        $destinationPath = resource_path('css/app.css');
+
+        if (! File::exists(dirname($destinationPath))) {
+            File::makeDirectory(dirname($destinationPath), 0755, true);
+        }
+
+        if ($force || $this->option('force')) {
+            File::copy($stubPath, $destinationPath);
+            $this->info('css/app.css file has been installed or overwritten successfully.');
+        } elseif (File::exists($destinationPath)) {
+            if ($this->confirm('css/app.css already exists. Do you want to overwrite it?', false)) {
+                File::copy($stubPath, $destinationPath);
+                $this->info('css/app.css file has been overwritten successfully.');
+            } else {
+                $this->warn('Skipping css/app.css installation.');
+            }
+        } else {
+            File::copy($stubPath, $destinationPath);
+            $this->info('css/app.css file has been installed successfully.');
+        }
+    }
+
+    /**
+     * @throws JsonException
+     */
+    protected function installNodePackages(array $packageNames): void
+    {
+        $packageJsonPath = base_path('package.json');
+        $packageJsonContent = File::get($packageJsonPath);
+        $packageJson = json_decode($packageJsonContent, true, 512, JSON_THROW_ON_ERROR);
+
+        $packagesToInstall = [];
+        foreach ($packageNames as $packageName) {
+            if (! isset($packageJson['devDependencies'][$packageName])) {
+                $packagesToInstall[] = $packageName;
+            }
+        }
+
+        if (! empty($packagesToInstall)) {
+            $packageInstallString = implode(' ', $packagesToInstall);
+            $command = "npm install $packageInstallString --save-dev";
+
+            $process = Process::fromShellCommandline($command, null, null, STDIN, null);
+            $process->setTty(Process::isTtySupported());
+            $process->run(function ($type, $buffer) {
+                $this->output->write($buffer);
+            });
+
+            if (! $process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
+
+            $this->info('Node packages installed successfully.');
+        }
     }
 
     private function runShellCommand($command): void
