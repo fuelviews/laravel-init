@@ -16,7 +16,7 @@ composer require fuelviews/laravel-init:^0.0
 You can initialize the package using the install command:
 
 ```bash
-php artisan init:install
+php artisan init:install && php artisan migrate:fresh
 ```
 
 You can force initialize the package using the install command:
