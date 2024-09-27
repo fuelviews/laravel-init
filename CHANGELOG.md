@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v0.0.15 - 2024-09-27
+
+### What's Changed
+
+* Updated composer require command and added new artisan command for package initialization. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/22
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v0.0.14...v0.0.15
+
 ## v0.0.14 - 2024-07-27
 
 ### What's Changed
