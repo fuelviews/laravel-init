@@ -10,10 +10,17 @@
 You can install the package via composer:
 
 ```bash
-composer require fuelviews/laravel-init
+composer require fuelviews/laravel-init:^0.0
 ```
 
-Run the artisan install command:
+You can initialize the package using the install command:
+
+```bash
+php artisan init:install && php artisan migrate:fresh
+```
+
+You can force initialize the package using the install command:
+
 
 ```bash
 php artisan init:install --force
