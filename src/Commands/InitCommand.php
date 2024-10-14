@@ -53,7 +53,7 @@ class InitCommand extends Command
 
         $this->runShellCommand("php artisan vendor:publish --tag=cloudflare-cache-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=sitemap-config {$force}");
-        $this->runShellCommand("php artisan vendor:publish --tag=navigation-config {$force} && php artisan vendor:publish --tag=navigation-spacer {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=navigation-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=navigation-logo {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=forms-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=layouts-wrapper-seeders {$force}");
@@ -70,6 +70,14 @@ class InitCommand extends Command
 
         $this->runShellCommand('php artisan storage:link');
         $this->runShellCommand("php artisan migrate {$force}");
+
+        $this->updateComposerScripts(function ($scripts) {
+            if (! isset($scripts['format'])) {
+                $scripts['format'] = ['vendor/bin/pint'];
+            }
+
+            return $scripts;
+        });
     }
 
     /**
@@ -81,6 +89,8 @@ class InitCommand extends Command
 
         $this->publishConfig('tailwind.config.js', $force);
         $this->publishConfig('postcss.config.js', $force);
+        $this->publishConfig('.prettierrc', $force);
+        $this->publishConfig('.prettierignore', $force);
         $this->publishAppCss($force);
 
         $devDependencies = [
@@ -89,9 +99,25 @@ class InitCommand extends Command
             'autoprefixer',
             'postcss',
             'tailwindcss',
+            'prettier',
+            'prettier-plugin-blade',
+            'prettier-plugin-tailwindcss',
         ];
 
         $this->installNodePackages($devDependencies);
+
+        // Add Prettier format script to package.json
+        $this->updateNodeScripts(function ($scripts) {
+            $newScripts = [];
+            foreach ($scripts as $key => $value) {
+                $newScripts[$key] = $value;
+                if ($key === 'build') {
+                    $newScripts['format'] = 'npx prettier --write resources/views/';
+                }
+            }
+
+            return $newScripts;
+        });
     }
 
     /**
@@ -108,6 +134,30 @@ class InitCommand extends Command
         ];
 
         $this->installNodePackages($devDependencies);
+    }
+
+    private function updateComposerScripts(callable $callback): void
+    {
+        $composerJsonPath = base_path('composer.json');
+
+        if (! file_exists($composerJsonPath)) {
+            $this->warn('composer.json file not found.');
+
+            return;
+        }
+
+        $content = json_decode(file_get_contents($composerJsonPath), true);
+
+        $content['scripts'] = $callback(
+            array_key_exists('scripts', $content) ? $content['scripts'] : []
+        );
+
+        file_put_contents(
+            $composerJsonPath,
+            json_encode($content, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT).PHP_EOL
+        );
+
+        $this->info('Updated composer.json scripts section.');
     }
 
     protected function publishConfig(string $configFileName, bool $force = false): void
@@ -188,6 +238,30 @@ class InitCommand extends Command
 
             $this->info('Node packages installed successfully.');
         }
+    }
+
+    private function updateNodeScripts(callable $callback)
+    {
+        $packageJsonPath = base_path('package.json');
+
+        if (! file_exists($packageJsonPath)) {
+            $this->warn('package.json file not found.');
+
+            return;
+        }
+
+        $content = json_decode(file_get_contents($packageJsonPath), true);
+
+        $content['scripts'] = $callback(
+            array_key_exists('scripts', $content) ? $content['scripts'] : []
+        );
+
+        file_put_contents(
+            $packageJsonPath,
+            json_encode($content, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT).PHP_EOL
+        );
+
+        $this->info('Updated package.json scripts section.');
     }
 
     private function runShellCommand($command): void
