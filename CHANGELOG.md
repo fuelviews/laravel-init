@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v0.0.16 - 2024-10-15
+
+### What's Changed
+
+* Updated composer.json and package.json scripts sections, added Prettier configuration files, and added .prettierignore file. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/24
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v0.0.15...v0.0.16
+
 ## v0.0.15 - 2024-09-27
 
 ### What's Changed
