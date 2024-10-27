@@ -10,7 +10,7 @@
 You can install the package via composer:
 
 ```bash
-composer require fuelviews/app-init
+composer require --dev fuelviews/app-init
 ```
 
 You can initialize the package using the installation command:
