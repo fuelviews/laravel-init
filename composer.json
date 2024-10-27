@@ -1,11 +1,11 @@
 {
     "name": "fuelviews/app-init",
-    "description": "Laravel Service Area Business Hero Package",
+    "description": "App Init Package",
     "keywords": [
         "fuelviews",
         "laravel",
         "app",
-        "initilization"
+        "init"
     ],
     "homepage": "https://github.com/fuelviews/app-init",
     "license": "MIT",
