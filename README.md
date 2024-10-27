@@ -1,4 +1,4 @@
-# Service Area Business Hero Package
+# App Init Package
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/fuelviews/app-init.svg?style=flat-square)](https://packagist.org/packages/fuelviews/app-init)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/fuelviews/app-init/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/fuelviews/app-init/actions?query=workflow%3Arun-tests+branch%3Amain)
