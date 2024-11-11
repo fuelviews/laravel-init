@@ -54,16 +54,6 @@ class InstallViteCommand extends Command
         if ($force || $this->option('force')) {
             \File::copy($stubPath, $destinationPath);
             $this->info("$configFileName has been installed or overwritten successfully.");
-        } elseif (\File::exists($destinationPath)) {
-            if ($this->confirm("$configFileName already exists. Do you want to overwrite it?", false)) {
-                \File::copy($stubPath, $destinationPath);
-                $this->info("$configFileName has been overwritten successfully.");
-            } else {
-                $this->warn("Skipping $configFileName installation.");
-            }
-        } else {
-            \File::copy($stubPath, $destinationPath);
-            $this->info("$configFileName has been installed successfully.");
         }
     }
 

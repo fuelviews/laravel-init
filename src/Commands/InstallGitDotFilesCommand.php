@@ -38,13 +38,6 @@ class InstallGitDotFilesCommand extends Command
         $stubsPath = __DIR__.'/../../stubs/';
 
         foreach ($files as $filename => $destinationPath) {
-            // Check if file exists at the destination
-            if (File::exists($destinationPath) && ! $this->option('force')) {
-                $this->info("{$filename} already exists. Use --force to overwrite.");
-
-                continue;
-            }
-
             // Check if the stub file exists
             $stubFilePath = $stubsPath.$filename;
             if (! File::exists($stubFilePath)) {
