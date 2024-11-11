@@ -19,9 +19,11 @@ class InstallCommand extends Command
         // Check if the --force flag is passed
         $forceOption = $this->option('force') ? ['--force' => true] : [];
 
+        $this->call('app-init:changelog', $forceOption);
         $this->call('app-init:vite', $forceOption);
         $this->call('app-init:tailwind', $forceOption);
         $this->call('app-init:prettier', $forceOption);
+        $this->call('app-init:git-dot-files', $forceOption);
         $this->call('app-init:composer-packages', $forceOption);
 
         // Run the migrations after ensuring environment variables are loaded
