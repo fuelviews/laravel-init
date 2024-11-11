@@ -14,16 +14,13 @@ class ConfigureEnvCommand extends Command
 
     public function handle(): void
     {
-        $envPath = base_path('.env');
-
-        // Check if --force option is passed
-        if (! $this->option('force')) {
-            $this->warn('No --force option provided. Use --force to overwrite the .env file.');
-
-            return;
+        if (! file_exists(base_path('.env'))) {
+            shell_exec('cp .env.example .env');
+            shell_exec('php artisan key:generate');
         }
 
-        // Modify the .env file contents
+        $envPath = base_path('.env');
+
         $this->modifyEnvFile($envPath);
 
         shell_exec('herd secure');
