@@ -1,0 +1,111 @@
+<?php
+
+namespace Fuelviews\AppInit\Commands;
+
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
+
+class InstallComposerPackagesCommand extends Command
+{
+    protected $signature = 'app-init:composer-packages {--force : Overwrite any existing files}';
+
+    protected $description = 'Install Composer packages for Fuelviews and Laravel projects';
+
+    public function handle(): void
+    {
+        $this->installComposerPackages();
+        $this->info('Composer packages installed successfully.');
+    }
+
+    /**
+     * Install Composer packages and run necessary commands
+     */
+    private function installComposerPackages(): void
+    {
+        $packages = [
+            'fuelviews/app-wrapper',
+            'fuelviews/laravel-cloudflare-cache',
+            'fuelviews/laravel-robots-txt',
+            'fuelviews/laravel-sitemap',
+            'ralphjsmit/laravel-seo',
+            'ralphjsmit/laravel-glide',
+            'livewire/livewire',
+            'spatie/laravel-google-fonts',
+        ];
+
+        // Install Composer packages
+        $requireCommand = 'composer require';
+        foreach ($packages as $package) {
+            $requireCommand .= " {$package}";
+        }
+
+        $this->info('Installing Composer packages...');
+        $this->runShellCommand($requireCommand);
+
+        // Run package-specific install commands
+        $this->runPackageInstallCommands();
+
+        $filePath = base_path('routes/web.php');
+        $search = "Route::get('/', function () {\n    return view('welcome');\n});";
+        $replace = "Route::get('/', function () {\n    return view('welcome');\n})->name('welcome');";
+
+        $fileContents = File::get($filePath);
+
+        $updatedContents = str_replace($search, $replace, $fileContents);
+
+        File::put($filePath, $updatedContents);
+    }
+
+    /**
+     * Run specific installation commands for the packages
+     */
+    private function runPackageInstallCommands(): void
+    {
+        $force = $this->option('force') ? '--force' : '';
+
+        $this->runShellCommand("php artisan vendor:publish --tag=cloudflare-cache-config {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=sitemap-config {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=robots-txt-config {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=app-wrapper-seeders {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=app-wrapper-welcome {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=seo-migrations {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=seo-config {$force}");
+
+        $this->runShellCommand("php artisan vendor:publish --tag=google-fonts-config {$force}");
+
+        $this->runShellCommand('php artisan app-wrapper:install');
+
+        // Check if storage is already linked before linking
+        if (! $this->isStorageLinked()) {
+            $this->runShellCommand('php artisan storage:link');
+        }
+    }
+
+    /**
+     * Run shell commands in the system
+     */
+    private function runShellCommand($command): void
+    {
+        $process = Process::fromShellCommandline($command);
+
+        $process->setTty(Process::isTtySupported());
+
+        $process->run(function ($type, $buffer) {
+            $this->output->write($buffer);
+        });
+
+        if (! $process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+    }
+
+    private function isStorageLinked(): bool
+    {
+        $publicStorageLink = public_path('storage');
+        $storagePath = storage_path('app/public');
+
+        return is_link($publicStorageLink) && readlink($publicStorageLink) === $storagePath;
+    }
+}
