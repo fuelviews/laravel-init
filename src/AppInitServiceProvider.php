@@ -29,5 +29,7 @@ class AppInitServiceProvider extends PackageServiceProvider
                 InstallComposerPackagesCommand::class,
                 ConfigureEnvCommand::class,
             ]);
+
     }
+
 }
