@@ -72,6 +72,9 @@ export default {
                     900: '#737E96',
                     950: '#657187',
                 },
+                'nav' : '#FFFFFF',
+                'nav-type' : '#000000',
+                'nav-type-trans' : '#FFFFFF',
                 'tint' : '#003082', //this sets the color of the tint
                 'type' : '#1f2937', //this sets the color of most body text
                 'hero-type' : '#fff',
