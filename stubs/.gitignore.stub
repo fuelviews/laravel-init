@@ -1,6 +1,6 @@
 .idea
 .phpunit.cache
-build
+/build
 coverage
 docs
 phpunit.xml
