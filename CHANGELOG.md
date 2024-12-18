@@ -2,6 +2,14 @@
 
 All notable changes to `app-init` will be documented in this file.
 
+## v1.0.1 - 2024-12-17
+
+### What's Changed
+
+* Change the .gitignore.stub file to include the /build directory and exclude the build directory, in order to properly ignore the build artifacts and improve the organization of the repository. by @thejmitchener in https://github.com/fuelviews/app-init/pull/13
+
+**Full Changelog**: https://github.com/fuelviews/app-init/commits/v1.0.1
+
 ## v1.0.0 - 2024-11-14
 
 ### What's Changed
