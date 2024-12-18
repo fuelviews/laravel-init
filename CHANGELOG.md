@@ -2,6 +2,15 @@
 
 All notable changes to `app-init` will be documented in this file.
 
+## v1.0.2 - 2024-12-18
+
+### What's Changed
+
+* Bump league/commonmark from 2.5.3 to 2.6.0 in the composer group across 1 directory by @dependabot in https://github.com/fuelviews/app-init/pull/12
+* Tweak APP_URL replace by @thejmitchener in https://github.com/fuelviews/app-init/pull/14
+
+**Full Changelog**: https://github.com/fuelviews/app-init/compare/v1.0.1...v1.0.2
+
 ## v1.0.1 - 2024-12-17
 
 ### What's Changed
