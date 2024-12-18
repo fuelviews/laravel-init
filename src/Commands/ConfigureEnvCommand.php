@@ -44,7 +44,7 @@ class ConfigureEnvCommand extends Command
         $envContent = preg_replace('/^APP_NAME=.*/m', "APP_NAME={$appName}", $envContent);
 
         // Update APP_URL to https://directory-name-here.test/
-        $envContent = preg_replace('/^APP_URL=.*/m', "APP_URL=https://{$localProjectName}.test/", $envContent);
+        $envContent = preg_replace('/^APP_URL=.*/m', "APP_URL=https://{$localProjectName}.test", $envContent);
 
         $envContent = preg_replace('/^LOG_DEPRECATIONS_CHANNEL=.*/m', 'LOG_DEPRECATIONS_CHANNEL=stack', $envContent);
 
