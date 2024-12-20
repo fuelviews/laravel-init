@@ -2,6 +2,14 @@
 
 All notable changes to `app-init` will be documented in this file.
 
+## v1.0.3 - 2024-12-20
+
+### What's Changed
+
+* Merge ours for CSS and JS files, merge theirs for CHANGELOG.md. Added image processing command and dependencies in composer.json. by @thejmitchener in https://github.com/fuelviews/app-init/pull/15
+
+**Full Changelog**: https://github.com/fuelviews/app-init/compare/v1.0.2...v1.0.3
+
 ## v1.0.2 - 2024-12-18
 
 ### What's Changed
