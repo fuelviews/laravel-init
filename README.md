@@ -26,6 +26,31 @@ You can force initialize the package using the installation command:
 php artisan app-init:install --force
 ```
 
+You can process images in the ```public/images/``` folder using the installation command:
+
+```bash
+php artisan app-init:images
+```
+
+You can force process images in the ```public/images/``` folder using the installation command:
+
+```bash
+php artisan app-init:images --force
+```
+
+
+Optional: Install the image manipulation binaries on MacOS (using Homebrew):
+
+```bash
+brew install jpegoptim
+brew install optipng
+brew install pngquant
+npm install -g svgo
+brew install gifsicle
+brew install webp
+brew install libavif
+```
+
 ## Testing
 
 ```bash

@@ -10,6 +10,7 @@ use Fuelviews\AppInit\Commands\InstallGitDotFilesCommand;
 use Fuelviews\AppInit\Commands\InstallPrettierCommand;
 use Fuelviews\AppInit\Commands\InstallTailwindCssCommand;
 use Fuelviews\AppInit\Commands\InstallViteCommand;
+use Fuelviews\AppInit\Commands\ProcessImagesCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -28,6 +29,7 @@ class AppInitServiceProvider extends PackageServiceProvider
                 InstallViteCommand::class,
                 InstallComposerPackagesCommand::class,
                 ConfigureEnvCommand::class,
+                ProcessImagesCommand::class,
             ]);
 
     }
