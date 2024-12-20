@@ -29,3 +29,6 @@ CHANGELOG.md        export-ignore
 # Merge ours
 *.css merge=ours
 *.js merge=ours
+
+# Merge theirs
+CHANGELOG.md merge=theirs
