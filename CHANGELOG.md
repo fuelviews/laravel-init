@@ -2,6 +2,14 @@
 
 All notable changes to `app-init` will be documented in this file.
 
+## v1.0.4 - 2024-12-20
+
+### What's Changed
+
+* Renamed bug.yml and config.yml files in the .github/ISSUE_TEMPLATE directory to issue_templates directory. Added new lines to the AppInit.php file in the Fuelviews\AppInit namespace. The changes were made to improve file organization and add functionality to the AppInit class. by @thejmitchener in https://github.com/fuelviews/app-init/pull/16
+
+**Full Changelog**: https://github.com/fuelviews/app-init/compare/v1.0.2...v1.0.4
+
 ## v1.0.3 - 2024-12-20
 
 ### What's Changed
