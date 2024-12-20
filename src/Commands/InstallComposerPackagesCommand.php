@@ -99,8 +99,9 @@ class InstallComposerPackagesCommand extends Command
             $this->output->write($buffer);
         });
 
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             $this->error("Command failed: {$command}");
+
             throw new ProcessFailedException($process);
         }
     }
