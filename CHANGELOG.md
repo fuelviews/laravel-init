@@ -2,6 +2,14 @@
 
 All notable changes to `app-init` will be documented in this file.
 
+## v1.0.5 - 2024-12-20
+
+### What's Changed
+
+* Update composer.json and InstallComposerPackagesCommand.php debs. by @thejmitchener in https://github.com/fuelviews/app-init/pull/17
+
+**Full Changelog**: https://github.com/fuelviews/app-init/compare/v1.0.2...v1.0.5
+
 ## v1.0.4 - 2024-12-20
 
 ### What's Changed
