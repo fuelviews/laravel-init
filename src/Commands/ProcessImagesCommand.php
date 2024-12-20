@@ -14,6 +14,7 @@ class ProcessImagesCommand extends Command
     protected $description = 'Process images in the public/images/ folder. Unifies naming, fixes extensions, and optimizes images.';
 
     private $totalSavedSpace = 0;
+
     private $minSavings = 3120; // Minimum savings in bytes (3 KB)git check
 
     public function handle(): void
@@ -22,8 +23,9 @@ class ProcessImagesCommand extends Command
 
         $imagePath = public_path('images');
 
-        if (!File::exists($imagePath)) {
+        if (! File::exists($imagePath)) {
             $this->error('The public/images/ directory does not exist.');
+
             return;
         }
 
@@ -31,12 +33,14 @@ class ProcessImagesCommand extends Command
 
         if (empty($files)) {
             $this->info('No images found to process.');
+
             return;
         }
 
         foreach ($files as $file) {
             if ($file->getExtension() === 'svg') {
                 $this->warn("Skipping {$file->getFilename()}: SVG files are not processed.");
+
                 continue;
             }
 
@@ -44,7 +48,7 @@ class ProcessImagesCommand extends Command
         }
 
         $this->info('Image processing and optimization completed.');
-        $this->info("Total space saved: " . $this->formatSize($this->totalSavedSpace));
+        $this->info('Total space saved: '.$this->formatSize($this->totalSavedSpace));
     }
 
     private function processImage($file): void
@@ -63,21 +67,23 @@ class ProcessImagesCommand extends Command
             $mime = $image->mime(); // Get MIME type
             $correctExtension = $this->getCorrectExtension($mime);
 
-            if (!$correctExtension) {
+            if (! $correctExtension) {
                 $this->warn("Skipping {$originalFilename}: Unknown MIME type.");
+
                 return;
             }
 
             // Check if renaming is required
             $newFilename = $this->generateNewName($originalFilename, $correctExtension);
-            $newFilePath = $file->getPath() . DIRECTORY_SEPARATOR . $newFilename;
+            $newFilePath = $file->getPath().DIRECTORY_SEPARATOR.$newFilename;
 
             if ($originalFilename !== $newFilename) {
-                if (File::exists($newFilePath) && !$this->option('force')) {
+                if (File::exists($newFilePath) && ! $this->option('force')) {
                     $this->warn("Skipping renaming {$originalFilename}: {$newFilename} already exists.");
                 } else {
-                    if (!File::move($filePath, $newFilePath)) {
+                    if (! File::move($filePath, $newFilePath)) {
                         $this->error("Failed to rename {$filePath} to {$newFilePath}");
+
                         return;
                     }
                     $this->info("Renamed {$originalFilename} -> {$newFilename}");
@@ -113,15 +119,16 @@ class ProcessImagesCommand extends Command
         $fileInfo = pathinfo($filename);
 
         // Convert base name to lowercase and apply correct extension
-        return strtolower($fileInfo['filename']) . '.' . $correctExtension;
+        return strtolower($fileInfo['filename']).'.'.$correctExtension;
     }
 
     private function optimizeImage(string $filePath, int $originalSize): void
     {
         $optimizerChain = OptimizerChainFactory::create();
 
-        if (!File::exists($filePath)) {
+        if (! File::exists($filePath)) {
             $this->error("File {$filePath} does not exist for optimization.");
+
             return;
         }
 
@@ -135,7 +142,7 @@ class ProcessImagesCommand extends Command
 
             if ($spaceSaved >= $this->minSavings) {
                 $this->totalSavedSpace += $spaceSaved;
-                $this->info("Optimized {$filePath}: Saved " . $this->formatSize($spaceSaved));
+                $this->info("Optimized {$filePath}: Saved ".$this->formatSize($spaceSaved));
             } else {
                 $this->warn("Skipped optimization for {$filePath}: Savings less than 5 KB.");
                 // Revert to original size if savings are insufficient
@@ -149,17 +156,17 @@ class ProcessImagesCommand extends Command
     private function formatSize(int $size): string
     {
         if ($size >= 1 << 30) {
-            return number_format($size / (1 << 30), 2) . ' GB';
+            return number_format($size / (1 << 30), 2).' GB';
         }
 
         if ($size >= 1 << 20) {
-            return number_format($size / (1 << 20), 2) . ' MB';
+            return number_format($size / (1 << 20), 2).' MB';
         }
 
         if ($size >= 1 << 10) {
-            return number_format($size / (1 << 10), 2) . ' KB';
+            return number_format($size / (1 << 10), 2).' KB';
         }
 
-        return $size . ' bytes';
+        return $size.' bytes';
     }
 }
