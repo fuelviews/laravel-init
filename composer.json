@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": "^8.2",
-        "spatie/laravel-package-tools": "^1.14.0"
+        "spatie/laravel-package-tools": "^1.14.0",
     },
     "require-dev": {
         "laravel/pint": "^1.0",
@@ -28,8 +28,8 @@
         "pestphp/pest": "^2.20",
         "pestphp/pest-plugin-arch": "^2.5",
         "pestphp/pest-plugin-laravel": "^2.0",
-        "intervention/image": "^2.7.2||^3.9",
-        "spatie/image-optimizer": "^1.8"
+        "intervention/image": "^2.7.2||=>3.9",
+        "spatie/image-optimizer": "=>1.8"
     },
     "autoload": {
         "psr-4": {

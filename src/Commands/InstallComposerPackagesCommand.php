@@ -25,14 +25,15 @@ class InstallComposerPackagesCommand extends Command
     private function installComposerPackages(): void
     {
         $packages = [
-            'fuelviews/app-wrapper',
-            'fuelviews/laravel-cloudflare-cache',
-            'fuelviews/laravel-robots-txt',
-            'fuelviews/laravel-sitemap',
-            'ralphjsmit/laravel-seo',
-            'ralphjsmit/laravel-glide',
-            'livewire/livewire',
-            'spatie/laravel-google-fonts',
+            'fuelviews/app-wrapper:">=0.0"',
+            'fuelviews/laravel-cloudflare-cache:">=0.0"',
+            'fuelviews/laravel-robots-txt:">=0.0"',
+            'fuelviews/laravel-sitemap:">=0.0"',
+            'ralphjsmit/laravel-seo:">=0.0"',
+            'ralphjsmit/laravel-glide:">=0.0"',
+            'livewire/livewire:">=0.0"',
+            'spatie/laravel-google-fonts:">=0.0"',
+            'spatie/image-optimizer:">=0.0"',
         ];
 
         // Install Composer packages
@@ -88,6 +89,8 @@ class InstallComposerPackagesCommand extends Command
      */
     private function runShellCommand($command): void
     {
+        $this->info("Executing command: {$command}");
+
         $process = Process::fromShellCommandline($command);
 
         $process->setTty(Process::isTtySupported());
@@ -96,7 +99,8 @@ class InstallComposerPackagesCommand extends Command
             $this->output->write($buffer);
         });
 
-        if (! $process->isSuccessful()) {
+        if (!$process->isSuccessful()) {
+            $this->error("Command failed: {$command}");
             throw new ProcessFailedException($process);
         }
     }
