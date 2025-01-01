@@ -2,7 +2,4 @@
 
 namespace Fuelviews\AppInit;
 
-class AppInit
-{
-
-}
+class AppInit {}
