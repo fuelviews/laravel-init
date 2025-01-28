@@ -1,6 +1,6 @@
 <?php
 
-namespace Fuelviews\AppInit\Commands;
+namespace Fuelviews\Init\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -9,7 +9,7 @@ use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class ProcessImagesCommand extends Command
 {
-    protected $signature = 'app-init:images {--force : Overwrite any existing files}';
+    protected $signature = 'init:images {--force : Overwrite any existing files}';
 
     protected $description = 'Process images in the public/images/ folder. Unifies naming, fixes extensions, and optimizes images.';
 

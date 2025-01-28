@@ -1,6 +1,6 @@
 <?php
 
-namespace Fuelviews\AppInit\Commands;
+namespace Fuelviews\Init\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class ConfigureEnvCommand extends Command
 {
-    protected $signature = 'app-init:env {--force : Overwrite any existing .env file}';
+    protected $signature = 'init:env {--force : Overwrite any existing .env file}';
 
     protected $description = 'Modify .env contents';
 

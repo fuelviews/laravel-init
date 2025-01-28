@@ -1,25 +1,25 @@
 <?php
 
-namespace Fuelviews\AppInit;
+namespace Fuelviews\Init;
 
-use Fuelviews\AppInit\Commands\ConfigureEnvCommand;
-use Fuelviews\AppInit\Commands\InstallChangeLogCommand;
-use Fuelviews\AppInit\Commands\InstallCommand;
-use Fuelviews\AppInit\Commands\InstallComposerPackagesCommand;
-use Fuelviews\AppInit\Commands\InstallGitDotFilesCommand;
-use Fuelviews\AppInit\Commands\InstallPrettierCommand;
-use Fuelviews\AppInit\Commands\InstallTailwindCssCommand;
-use Fuelviews\AppInit\Commands\InstallViteCommand;
-use Fuelviews\AppInit\Commands\ProcessImagesCommand;
+use Fuelviews\Init\Commands\ConfigureEnvCommand;
+use Fuelviews\Init\Commands\InstallChangeLogCommand;
+use Fuelviews\Init\Commands\InstallCommand;
+use Fuelviews\Init\Commands\InstallComposerPackagesCommand;
+use Fuelviews\Init\Commands\InstallGitDotFilesCommand;
+use Fuelviews\Init\Commands\InstallPrettierCommand;
+use Fuelviews\Init\Commands\InstallTailwindCssCommand;
+use Fuelviews\Init\Commands\InstallViteCommand;
+use Fuelviews\Init\Commands\ProcessImagesCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class AppInitServiceProvider extends PackageServiceProvider
+class InitServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('app-init')
+            ->name('laravel-init')
             ->hasCommands([
                 InstallCommand::class,
                 InstallChangeLogCommand::class,

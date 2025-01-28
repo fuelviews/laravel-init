@@ -1,6 +1,6 @@
 <?php
 
-namespace Fuelviews\AppInit\Commands;
+namespace Fuelviews\Init\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -9,7 +9,7 @@ use Symfony\Component\Process\Process;
 
 class InstallComposerPackagesCommand extends Command
 {
-    protected $signature = 'app-init:composer-packages {--force : Overwrite any existing files}';
+    protected $signature = 'init:composer-packages {--force : Overwrite any existing files}';
 
     protected $description = 'Install Composer packages for Fuelviews and Laravel projects';
 
@@ -36,14 +36,25 @@ class InstallComposerPackagesCommand extends Command
             'spatie/image-optimizer:">=0.0"',
         ];
 
+        $packagesDev = [
+            'spatie/image-optimizer:">=0.0"',
+        ];
+
         // Install Composer packages
         $requireCommand = 'composer require';
         foreach ($packages as $package) {
             $requireCommand .= " {$package}";
         }
 
+        // Install Composer packages
+        $requireCommandDev = 'composer require --dev';
+        foreach ($packagesDev as $package) {
+            $requireCommandDev .= " {$package}";
+        }
+
         $this->info('Installing Composer packages...');
         $this->runShellCommand($requireCommand);
+        $this->runShellCommand($requireCommandDev);
 
         // Run package-specific install commands
         $this->runPackageInstallCommands();
