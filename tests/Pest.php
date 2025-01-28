@@ -1,5 +1,5 @@
 <?php
 
-use Fuelviews\AppInit\Tests\TestCase;
+use Fuelviews\Init\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

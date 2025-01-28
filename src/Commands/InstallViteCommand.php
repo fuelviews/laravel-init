@@ -1,6 +1,6 @@
 <?php
 
-namespace Fuelviews\AppInit\Commands;
+namespace Fuelviews\Init\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -8,7 +8,7 @@ use Symfony\Component\Process\Process;
 
 class InstallViteCommand extends Command
 {
-    protected $signature = 'app-init:vite {--force : Overwrite any existing files}';
+    protected $signature = 'init:vite {--force : Overwrite any existing files}';
 
     protected $description = 'Install Vite and related configurations for Laravel projects';
 

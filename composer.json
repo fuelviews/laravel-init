@@ -1,5 +1,5 @@
 {
-    "name": "fuelviews/app-init",
+    "name": "fuelviews/laravel-init",
     "description": "App Init Package",
     "keywords": [
         "fuelviews",
@@ -7,7 +7,7 @@
         "app",
         "init"
     ],
-    "homepage": "https://github.com/fuelviews/app-init",
+    "homepage": "https://github.com/fuelviews/laravel-init",
     "license": "MIT",
     "authors": [
         {
@@ -33,18 +33,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Fuelviews\\AppInit\\": "src/"
+            "Fuelviews\\Init\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Fuelviews\\AppInit\\Tests\\": "tests/",
+            "Fuelviews\\Init\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-app-init --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-laravel-init --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -70,11 +70,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Fuelviews\\AppInit\\AppInitServiceProvider"
+                "Fuelviews\\Init\\InitServiceProvider"
             ]
         },
         "aliases": {
-            "RedirectIfNotFound": "Fuelviews\\AppInit\\Facades\\AppInit"
+            "RedirectIfNotFound": "Fuelviews\\Init\\Facades\\Init"
         }
     },
     "minimum-stability": "dev",
