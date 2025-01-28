@@ -30,3 +30,5 @@ yarn-error.log
 php.ini
 error_log
 .DS_Store
+.php-cs-fixer.cache
+composer.lock

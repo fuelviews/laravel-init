@@ -1,41 +1,41 @@
-# App Init Package
+# Init Package
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/fuelviews/app-init.svg?style=flat-square)](https://packagist.org/packages/fuelviews/app-init)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/fuelviews/app-init/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/fuelviews/app-init/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/fuelviews/app-init/fix-php-code-style-issues.yml?label=code%20style&style=flat-square)](https://github.com/fuelviews/app-init/actions?query=workflow%3A"Fix+PHP+code+style+issues")
-[![Total Downloads](https://img.shields.io/packagist/dt/fuelviews/app-init.svg?style=flat-square)](https://packagist.org/packages/fuelviews/app-init)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/fuelviews/laravel-init.svg?style=flat-square)](https://packagist.org/packages/fuelviews/laravel-init)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/fuelviews/laravel-init/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/fuelviews/laravel-init/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/fuelviews/laravel-init/fix-php-code-style-issues.yml?label=code%20style&style=flat-square)](https://github.com/fuelviews/laravel-init/actions?query=workflow%3A"Fix+PHP+code+style+issues")
+[![Total Downloads](https://img.shields.io/packagist/dt/fuelviews/laravel-init.svg?style=flat-square)](https://packagist.org/packages/fuelviews/laravel-init)
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require --dev fuelviews/app-init
+composer require --dev fuelviews/laravel-init
 ```
 
 You can initialize the package using the installation command:
 
 ```bash
-php artisan app-init:install
+php artisan init:install
 ```
 
 You can force initialize the package using the installation command:
 
 
 ```bash
-php artisan app-init:install --force
+php artisan init:install --force
 ```
 
 You can process images in the ```public/images/``` folder using the installation command:
 
 ```bash
-php artisan app-init:images
+php artisan init:images
 ```
 
 You can force process images in the ```public/images/``` folder using the installation command:
 
 ```bash
-php artisan app-init:images --force
+php artisan init:images --force
 ```
 
 

@@ -1,13 +1,12 @@
 {
-    "name": "fuelviews/app-init",
+    "name": "fuelviews/laravel-init",
     "description": "App Init Package",
     "keywords": [
         "fuelviews",
         "laravel",
-        "app",
         "init"
     ],
-    "homepage": "https://github.com/fuelviews/app-init",
+    "homepage": "https://github.com/fuelviews/laravel-init",
     "license": "MIT",
     "authors": [
         {
@@ -18,13 +17,13 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.1||^8.2||^8.3||^8.4",
         "spatie/laravel-package-tools": "^1.14.0"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
         "nunomaduro/collision": "^7.8",
-        "orchestra/testbench": "^8.8",
+        "orchestra/testbench": "^8.8||^9.0",
         "pestphp/pest": "^2.20",
         "pestphp/pest-plugin-arch": "^2.5",
         "pestphp/pest-plugin-laravel": "^2.0",
@@ -33,18 +32,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Fuelviews\\AppInit\\": "src/"
+            "Fuelviews\\Init\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Fuelviews\\AppInit\\Tests\\": "tests/",
+            "Fuelviews\\Init\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-app-init --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-laravel-init --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -70,11 +69,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Fuelviews\\AppInit\\AppInitServiceProvider"
+                "Fuelviews\\Init\\InitServiceProvider"
             ]
         },
         "aliases": {
-            "RedirectIfNotFound": "Fuelviews\\AppInit\\Facades\\AppInit"
+            "RedirectIfNotFound": "Fuelviews\\Init\\Facades\\Init"
         }
     },
     "minimum-stability": "dev",
