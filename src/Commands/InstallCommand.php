@@ -1,6 +1,6 @@
 <?php
 
-namespace Fuelviews\AppInit\Commands;
+namespace Fuelviews\Init\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -8,7 +8,7 @@ use Symfony\Component\Process\Process;
 
 class InstallCommand extends Command
 {
-    protected $signature = 'app-init:install {--force : Overwrite any existing files}';
+    protected $signature = 'init:install {--force : Overwrite any existing files}';
 
     protected $description = 'Install all Fuelviews packages, TailwindCSS, Vite, Prettier, and other dependencies';
 
@@ -19,12 +19,12 @@ class InstallCommand extends Command
         // Check if the --force flag is passed
         $forceOption = $this->option('force') ? ['--force' => true] : [];
 
-        $this->call('app-init:changelog', $forceOption);
-        $this->call('app-init:vite', $forceOption);
-        $this->call('app-init:tailwind', $forceOption);
-        $this->call('app-init:prettier', $forceOption);
-        $this->call('app-init:git-dot-files', $forceOption);
-        $this->call('app-init:composer-packages', $forceOption);
+        $this->call('init:changelog', $forceOption);
+        $this->call('init:vite', $forceOption);
+        $this->call('init:tailwind', $forceOption);
+        $this->call('init:prettier', $forceOption);
+        $this->call('init:git-dot-files', $forceOption);
+        $this->call('init:composer-packages', $forceOption);
 
         // Run the migrations after ensuring environment variables are loaded
         $this->call('migrate', $forceOption);
