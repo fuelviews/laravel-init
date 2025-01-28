@@ -2,6 +2,7 @@ name: Run Tests
 
 on:
   workflow_dispatch:
+
   pull_request:
     branches:
       - main
@@ -12,20 +13,20 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
     strategy:
       fail-fast: true
       matrix:
+        os: [ubuntu-latest]
         php: [8.3, 8.2, 8.1]
         laravel: [10.*, 11.*]
-        testbench: [8.*, 9.*]
         stability: [prefer-lowest, prefer-stable]
-        exclude:
+        include:
           - laravel: 10.*
-            testbench: 9.*
-          - laravel: 11.*
             testbench: 8.*
+
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -60,3 +61,4 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest --ci
+
