@@ -1,6 +1,6 @@
 <?php
 
-namespace Fuelviews\AppInit\Commands;
+namespace Fuelviews\Init\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -8,7 +8,7 @@ use Symfony\Component\Process\Process;
 
 class InstallTailwindCssCommand extends Command
 {
-    protected $signature = 'app-init:tailwindcss {--force : Overwrite any existing files}';
+    protected $signature = 'init:tailwindcss {--force : Overwrite any existing files}';
 
     protected $description = 'Install TailwindCSS and related configuration for Laravel projects';
 

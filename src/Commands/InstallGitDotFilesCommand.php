@@ -1,6 +1,6 @@
 <?php
 
-namespace Fuelviews\AppInit\Commands;
+namespace Fuelviews\Init\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -12,7 +12,7 @@ class InstallGitDotFilesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app-init:git-dot-files {--force : Overwrite any existing files}';
+    protected $signature = 'init:git-dot-files {--force : Overwrite any existing files}';
 
     /**
      * The console command description.
