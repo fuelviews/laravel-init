@@ -2,4 +2,6 @@
 
 namespace Fuelviews\Init;
 
-class Init {}
+class Init
+{
+}
