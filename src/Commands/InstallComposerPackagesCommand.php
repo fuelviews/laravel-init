@@ -25,7 +25,7 @@ class InstallComposerPackagesCommand extends Command
     private function installComposerPackages(): void
     {
         $packages = [
-            'fuelviews/app-wrapper:">=0.0"',
+            'fuelviews/laravel-sabhero-wrapper:">=0.0"',
             'fuelviews/laravel-cloudflare-cache:">=0.0"',
             'fuelviews/laravel-robots-txt:">=0.0"',
             'fuelviews/laravel-sitemap:">=0.0"',
@@ -33,7 +33,6 @@ class InstallComposerPackagesCommand extends Command
             'ralphjsmit/laravel-glide:">=0.0"',
             'livewire/livewire:">=0.0"',
             'spatie/laravel-google-fonts:">=0.0"',
-            'spatie/image-optimizer:">=0.0"',
         ];
 
         $packagesDev = [
@@ -80,16 +79,15 @@ class InstallComposerPackagesCommand extends Command
         $this->runShellCommand("php artisan vendor:publish --tag=cloudflare-cache-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=sitemap-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=robots-txt-config {$force}");
-        $this->runShellCommand("php artisan vendor:publish --tag=app-wrapper-seeders {$force}");
-        $this->runShellCommand("php artisan vendor:publish --tag=app-wrapper-welcome {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=laravel-sabhero-wrapper-seeders {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=laravel-sabhero-wrapper-welcome {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=seo-migrations {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=seo-config {$force}");
 
         $this->runShellCommand("php artisan vendor:publish --tag=google-fonts-config {$force}");
 
-        $this->runShellCommand('php artisan app-wrapper:install');
+        $this->runShellCommand('php artisan sabhero-wrapper:install');
 
-        // Check if storage is already linked before linking
         if (! $this->isStorageLinked()) {
             $this->runShellCommand('php artisan storage:link');
         }
