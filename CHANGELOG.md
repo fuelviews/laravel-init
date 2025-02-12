@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v1.0.7 - 2025-02-12
+
+### What's Changed
+
+* Update Tailwind config, composer packages, and file tracking by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/27
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v1.0.5...v1.0.7
+
 ## v1.0.6 - 2025-01-28
 
 ### What's Changed
