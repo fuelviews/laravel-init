@@ -17,6 +17,10 @@ export default defineConfig({
             refresh: [
                 ...refreshPaths,
                 'app/View/**',
+                'app/Components/**',
+                'app/Filament/**',
+                'app/Resources/**',
+                'app/Models/**',
                 'app/Livewire/**',
                 'resources/views/**/*.blade.php',
             ],
