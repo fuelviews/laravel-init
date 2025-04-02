@@ -8,7 +8,7 @@ use Symfony\Component\Process\Process;
 
 class InstallTailwindCssCommand extends Command
 {
-    protected $signature = 'init:tailwindcss {--force : Overwrite any existing files}';
+    protected $signature = 'init:tailwindcss {--force : Overwrite any existing files}: Specify the Tailwind CSS version to install}';
 
     protected $description = 'Install TailwindCSS and related configuration for Laravel projects';
 
@@ -39,7 +39,7 @@ class InstallTailwindCssCommand extends Command
             '@tailwindcss/typography',
             'autoprefixer',
             'postcss',
-            'tailwindcss',
+            'tailwindcss@3.4.17',
         ];
 
         $this->installNodePackages($devDependencies);
