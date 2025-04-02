@@ -1,8 +1,6 @@
 # Init Package
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/fuelviews/laravel-init.svg?style=flat-square)](https://packagist.org/packages/fuelviews/laravel-init)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/fuelviews/laravel-init/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/fuelviews/laravel-init/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/fuelviews/laravel-init/fix-php-code-style-issues.yml?label=code%20style&style=flat-square)](https://github.com/fuelviews/laravel-init/actions?query=workflow%3A"Fix+PHP+code+style+issues")
 [![Total Downloads](https://img.shields.io/packagist/dt/fuelviews/laravel-init.svg?style=flat-square)](https://packagist.org/packages/fuelviews/laravel-init)
 
 ## Installation
@@ -71,7 +69,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [Thejmitchener](https://github.com/thejmitchener)
+- [Joshua Mitchener](https://github.com/thejmitchener)
 - [Fuelviews](https://github.com/fuelviews)
 - [All Contributors](../../contributors)
 
