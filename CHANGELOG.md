@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v1.0.8 - 2025-04-02
+
+### What's Changed
+
+* Bump aglipanci/laravel-pint-action from 2.4 to 2.5 by @dependabot in https://github.com/fuelviews/laravel-init/pull/28
+* Update composer dependencies to support PHP 8.2 and 8.3, and upgrade the Laravel package tools version. Modify the Tailwind CSS command to specify the version during installation. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/29
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v1.0.5...v1.0.8
+
 ## v1.0.7 - 2025-02-12
 
 ### What's Changed
