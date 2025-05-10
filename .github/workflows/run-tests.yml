@@ -8,8 +8,8 @@ on:
       - main
 
 permissions:
-  pull-requests: write
-  contents: write
+  pull-requests: read
+  contents: read
 
 jobs:
   test:
@@ -20,13 +20,15 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         php: [8.4, 8.3]
-        laravel: [12.*, 11.*]
+        laravel: [12.*, 11.*, 10.*]
         stability: [prefer-lowest, prefer-stable]
         include:
           - laravel: 12.*
             testbench: 10.*
           - laravel: 11.*
             testbench: 9.*
+          - laravel: 10.*
+            testbench: 8.*
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
@@ -46,13 +48,6 @@ jobs:
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: Configure GitHub Token
-        env:
-          GH_TOKEN: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
-        run: |
-          git config --global url."https://${GH_TOKEN}@github.com/".insteadOf "https://github.com/"
-          git config --global url."https://${GH_TOKEN}@github.com/".insteadOf "git@github.com:"
-
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
@@ -63,4 +58,3 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest --ci
-

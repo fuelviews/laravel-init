@@ -1,6 +1,6 @@
 {
     "name": "fuelviews/laravel-init",
-    "description": "App Init Package",
+    "description": "Laravel init package",
     "keywords": [
         "fuelviews",
         "laravel",
@@ -11,6 +11,7 @@
     "authors": [
         {
             "name": "Joshua Mitchener",
+            "homepage": "https://fuelviews.com",
             "role": "Developer"
         }
     ],
