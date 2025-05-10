@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v1.0.9 - 2025-05-10
+
+### What's Changed
+
+* Bump aglipanci/laravel-pint-action from 2.4 to 2.5 by @dependabot in https://github.com/fuelviews/laravel-init/pull/28
+* Update GitHub Actions permissions to read-only and expand Laravel version support in the test matrix. Remove outdated commands from the README and improve descriptions in composer.json and code comments for clarity. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/30
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v1.0.5...v1.0.9
+
 ## v1.0.8 - 2025-04-02
 
 ### What's Changed

@@ -20,7 +20,7 @@ class InstallComposerPackagesCommand extends Command
     }
 
     /**
-     * Install Composer packages and run necessary commands
+     * Install Composer packages and run the necessary commands
      */
     private function installComposerPackages(): void
     {
@@ -79,11 +79,9 @@ class InstallComposerPackagesCommand extends Command
         $this->runShellCommand("php artisan vendor:publish --tag=cloudflare-cache-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=sitemap-config {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=robots-txt-config {$force}");
-        $this->runShellCommand("php artisan vendor:publish --tag=laravel-sabhero-wrapper-seeders {$force}");
-        $this->runShellCommand("php artisan vendor:publish --tag=laravel-sabhero-wrapper-welcome {$force}");
+        $this->runShellCommand("php artisan vendor:publish --tag=sabhero-wrapper-welcome {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=seo-migrations {$force}");
         $this->runShellCommand("php artisan vendor:publish --tag=seo-config {$force}");
-
         $this->runShellCommand("php artisan vendor:publish --tag=google-fonts-config {$force}");
 
         $this->runShellCommand('php artisan sabhero-wrapper:install');

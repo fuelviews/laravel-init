@@ -11,12 +11,6 @@ You can install the package via composer:
 composer require --dev fuelviews/laravel-init
 ```
 
-You can initialize the package using the installation command:
-
-```bash
-php artisan init:install
-```
-
 You can force initialize the package using the installation command:
 
 
@@ -29,13 +23,6 @@ You can process images in the ```public/images/``` folder using the installation
 ```bash
 php artisan init:images
 ```
-
-You can force process images in the ```public/images/``` folder using the installation command:
-
-```bash
-php artisan init:images --force
-```
-
 
 Optional: Install the image manipulation binaries on MacOS (using Homebrew):
 
@@ -70,6 +57,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [Joshua Mitchener](https://github.com/thejmitchener)
+- [Daniel Clark](https://github.com/sweatybreeze)
 - [Fuelviews](https://github.com/fuelviews)
 - [All Contributors](../../contributors)
 
