@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v1.0.11 - 2025-06-19
+
+### What's Changed
+
+* Update the target branch for the auto-release workflow from 'dev' to 'main' to align with the current development practices. Additionally, a minor update was made to the README file for clarity. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/34
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v1.0.10...v1.0.11
+
 ## v1.0.9 - 2025-05-10
 
 ### What's Changed
