@@ -9,7 +9,8 @@ export default {
         './vendor/fuelviews/laravel-*/resources/**/*.{js,vue,blade.php}',
         './vendor/fuelviews/laravel-navigation/resources/**/*.{js,vue,blade.php}',
         './vendor/fuelviews/laravel-*/resources/**/*.{js,vue,blade.php}',
-        './vendor/fuelviews/laravel-sabhero-blog/src/**/*.php',
+        './vendor/fuelviews/laravel-sabhero-article/resources/**/*.php',
+        './vendor/fuelviews/laravel-sabhero-article/src/**/*.php',
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
     ],
     theme: {

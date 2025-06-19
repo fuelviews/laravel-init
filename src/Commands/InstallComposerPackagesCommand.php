@@ -24,36 +24,48 @@ class InstallComposerPackagesCommand extends Command
      */
     private function installComposerPackages(): void
     {
-        $packages = [
-            'fuelviews/laravel-sabhero-wrapper:">=0.0"',
-            'fuelviews/laravel-cloudflare-cache:">=0.0"',
-            'fuelviews/laravel-robots-txt:">=0.0"',
-            'fuelviews/laravel-sitemap:">=0.0"',
-            'ralphjsmit/laravel-seo:">=0.0"',
-            'ralphjsmit/laravel-glide:">=0.0"',
-            'livewire/livewire:">=0.0"',
-            'spatie/laravel-google-fonts:">=0.0"',
+        // Packages with version constraints
+        $packagesWithVersions = [
+            'fuelviews/laravel-sabhero-wrapper:"^0.0"',
+            'fuelviews/laravel-cloudflare-cache:"^0.0"',
+            'fuelviews/laravel-robots-txt:"^0.0"',
+            'fuelviews/laravel-sitemap:"^0.0"',
+        ];
+
+        // Packages without version constraints
+        $packagesWithoutVersions = [
+            'ralphjsmit/laravel-seo',
+            'ralphjsmit/laravel-glide',
+            'livewire/livewire',
+            'spatie/laravel-google-fonts',
         ];
 
         $packagesDev = [
-            'spatie/image-optimizer:">=0.0"',
+            'spatie/image-optimizer',
         ];
 
-        // Install Composer packages
-        $requireCommand = 'composer require';
-        foreach ($packages as $package) {
-            $requireCommand .= " {$package}";
-        }
-
-        // Install Composer packages
-        $requireCommandDev = 'composer require --dev';
-        foreach ($packagesDev as $package) {
-            $requireCommandDev .= " {$package}";
-        }
-
         $this->info('Installing Composer packages...');
-        $this->runShellCommand($requireCommand);
-        $this->runShellCommand($requireCommandDev);
+        
+        // Install packages with version constraints as a group
+        if (!empty($packagesWithVersions)) {
+            $this->info('Installing packages with version constraints...');
+            $requireCommand = 'composer require ' . implode(' ', $packagesWithVersions);
+            $this->runShellCommand($requireCommand);
+        }
+        
+        // Install packages without version constraints as a group
+        if (!empty($packagesWithoutVersions)) {
+            $this->info('Installing packages without version constraints...');
+            $requireCommand = 'composer require ' . implode(' ', $packagesWithoutVersions);
+            $this->runShellCommand($requireCommand);
+        }
+        
+        // Install dev packages
+        if (!empty($packagesDev)) {
+            $this->info('Installing dev packages...');
+            $requireCommandDev = 'composer require --dev ' . implode(' ', $packagesDev);
+            $this->runShellCommand($requireCommandDev);
+        }
 
         // Run package-specific install commands
         $this->runPackageInstallCommands();

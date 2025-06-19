@@ -48,15 +48,15 @@ class ConfigureEnvCommand extends Command
 
         $envContent = preg_replace('/^LOG_DEPRECATIONS_CHANNEL=.*/m', 'LOG_DEPRECATIONS_CHANNEL=stack', $envContent);
 
-        // Comment out DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, and DB_PASSWORD
-        $envContent = preg_replace('/^(DB_HOST=.*)/m', '#$1', $envContent);
-        $envContent = preg_replace('/^(DB_PORT=.*)/m', '#$1', $envContent);
-        $envContent = preg_replace('/^(DB_DATABASE=.*)/m', '#$1', $envContent);
-        $envContent = preg_replace('/^(DB_USERNAME=.*)/m', '#$1', $envContent);
-        $envContent = preg_replace('/^(DB_PASSWORD=.*)/m', '#$1', $envContent);
+        // Update database configuration
+        $envContent = preg_replace('/^DB_HOST=.*/m', 'DB_HOST=127.0.0.1', $envContent);
+        $envContent = preg_replace('/^DB_PORT=.*/m', 'DB_PORT=5432', $envContent);
+        $envContent = preg_replace('/^DB_DATABASE=.*/m', "DB_DATABASE={$localProjectName}", $envContent);
+        $envContent = preg_replace('/^DB_USERNAME=.*/m', 'DB_USERNAME=root', $envContent);
+        $envContent = preg_replace('/^DB_PASSWORD=.*/m', 'DB_PASSWORD=', $envContent);
 
         // Update DB_CONNECTION to sqlite
-        $envContent = preg_replace('/^DB_CONNECTION=.*/m', 'DB_CONNECTION=sqlite', $envContent);
+        $envContent = preg_replace('/^DB_CONNECTION=.*/m', 'DB_CONNECTION=pgsql', $envContent);
 
         // Write the modified content back to the .env file
         File::put($envPath, $envContent);
