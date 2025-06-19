@@ -57,7 +57,7 @@ jobs:
             -d @- <<EOF
           {
             "tag_name": "$NEW_TAG",
-            "target_commitish": "dev"
+            "target_commitish": "main"
           }
           EOF
           )
