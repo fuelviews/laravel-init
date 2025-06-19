@@ -47,21 +47,21 @@ class InstallComposerPackagesCommand extends Command
         $this->info('Installing Composer packages...');
         
         // Install packages with version constraints as a group
-        if (!empty($packagesWithVersions)) {
+        if (! empty($packagesWithVersions)) {
             $this->info('Installing packages with version constraints...');
             $requireCommand = 'composer require ' . implode(' ', $packagesWithVersions);
             $this->runShellCommand($requireCommand);
         }
         
         // Install packages without version constraints as a group
-        if (!empty($packagesWithoutVersions)) {
+        if (! empty($packagesWithoutVersions)) {
             $this->info('Installing packages without version constraints...');
             $requireCommand = 'composer require ' . implode(' ', $packagesWithoutVersions);
             $this->runShellCommand($requireCommand);
         }
         
         // Install dev packages
-        if (!empty($packagesDev)) {
+        if (! empty($packagesDev)) {
             $this->info('Installing dev packages...');
             $requireCommandDev = 'composer require --dev ' . implode(' ', $packagesDev);
             $this->runShellCommand($requireCommandDev);
