@@ -27,8 +27,8 @@ class InstallComposerPackagesCommand extends Command
         // Packages with version constraints
         $packagesWithVersions = [
             'fuelviews/laravel-sabhero-wrapper:"^0.0"',
-            'fuelviews/laravel-cloudflare-cache:"^0.0"',
-            'fuelviews/laravel-robots-txt:"^0.0"',
+            'fuelviews/laravel-cloudflare-cache:"^2.0"',
+            'fuelviews/laravel-robots-txt:"^1.0"',
             'fuelviews/laravel-sitemap:"^0.0"',
         ];
 
@@ -45,21 +45,21 @@ class InstallComposerPackagesCommand extends Command
         ];
 
         $this->info('Installing Composer packages...');
-        
+
         // Install packages with version constraints as a group
         if (! empty($packagesWithVersions)) {
             $this->info('Installing packages with version constraints...');
             $requireCommand = 'composer require ' . implode(' ', $packagesWithVersions);
             $this->runShellCommand($requireCommand);
         }
-        
+
         // Install packages without version constraints as a group
         if (! empty($packagesWithoutVersions)) {
             $this->info('Installing packages without version constraints...');
             $requireCommand = 'composer require ' . implode(' ', $packagesWithoutVersions);
             $this->runShellCommand($requireCommand);
         }
-        
+
         // Install dev packages
         if (! empty($packagesDev)) {
             $this->info('Installing dev packages...');
