@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v2.0.0 - 2025-08-20
+
+### What's Changed
+
+* Refactor package with laravel boost #major by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/36
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v1.0.11...v2.0.0
+
 ## v1.0.11 - 2025-06-19
 
 ### What's Changed

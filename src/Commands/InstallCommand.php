@@ -2,55 +2,111 @@
 
 namespace Fuelviews\Init\Commands;
 
-use Illuminate\Console\Command;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use Fuelviews\Init\Traits\ExecutesShellCommands;
 
-class InstallCommand extends Command
+class InstallCommand extends BaseInitCommand
 {
-    protected $signature = 'init:install {--force : Overwrite any existing files}';
+    use ExecutesShellCommands;
+
+    protected $signature = 'init:install {--force : Overwrite any existing files} {--dev : Install development versions of packages}';
 
     protected $description = 'Install all Fuelviews packages, TailwindCSS, Vite, Prettier, and other dependencies';
 
-    public function handle(): void
+    public function handle(): int
     {
-        $this->info('Starting the installation process...');
+        $this->info('🚀 Starting the complete Laravel Init installation process...');
+        $this->newLine();
 
-        // Check if the --force flag is passed
-        $forceOption = $this->option('force') ? ['--force' => true] : [];
 
-        $this->call('init:changelog', $forceOption);
-        $this->call('init:vite', $forceOption);
-        $this->call('init:tailwind', $forceOption);
-        $this->call('init:prettier', $forceOption);
-        $this->call('init:git-dot-files', $forceOption);
-        $this->call('init:composer-packages', $forceOption);
+        $commands = [
+            'init:changelog' => 'Setting up changelog',
+            'init:vite' => 'Installing Vite',
+            'init:tailwindcss' => 'Installing TailwindCSS',
+            'init:prettier' => 'Installing Prettier',
+            'init:git-dot-files' => 'Setting up Git files',
+            'init:composer-packages' => 'Installing Composer packages',
+        ];
 
-        // Run the migrations after ensuring environment variables are loaded
-        $this->call('migrate', $forceOption);
+        $failed = [];
+        $options = $this->getCommandOptions();
 
-        $this->call('optimize:clear');
+        foreach ($commands as $command => $description) {
+            $this->startTask($description);
+            
 
-        $this->runShellCommand('npm run build');
+            $exitCode = $this->call($command, $options);
+            
+            if ($exitCode === 0) {
+                $this->completeTask($description);
+            } else {
+                $this->failTask($description);
+                $failed[] = $command;
+            }
+        }
 
-        $this->info('All packages and dependencies installed successfully.');
+        if (! empty($failed)) {
+            $this->error('Some commands failed:');
+            foreach ($failed as $command) {
+                $this->line("  • $command");
+            }
+
+            return self::FAILURE;
+        }
+
+        // Post-installation tasks
+        $this->newLine();
+        $this->info('Running post-installation tasks...');
+
+        // Run migrations
+        $this->startTask('Running database migrations');
+        $migrationsSuccess = $this->runArtisanCommand('migrate', $options);
+        
+        if ($migrationsSuccess) {
+            $this->completeTask('Database migrations completed');
+        } else {
+            $this->warn('Database migrations failed (this may be expected if no migrations are pending)');
+        }
+
+        // Clear caches
+        $this->startTask('Clearing application caches');
+        $this->runArtisanCommand('optimize:clear');
+        $this->completeTask('Application caches cleared');
+
+        // Build frontend assets
+        $this->startTask('Building frontend assets');
+        $buildSuccess = $this->runShellCommand('npm run build');
+        
+        if ($buildSuccess) {
+            $this->completeTask('Frontend assets built successfully');
+        } else {
+            $this->warn('Frontend build failed (make sure Node.js is installed)');
+        }
+
+        $this->newLine();
+        $this->info('✅ Laravel Init installation completed successfully!');
+        $this->newLine();
+        
+        $this->info('Next steps:');
+        $this->line('  • Run "php artisan init:status" to check installation status');
+        $this->line('  • Run "npm run dev" to start the development server');
+        $this->line('  • Check your .env file for any additional configuration');
+        
+        return self::SUCCESS;
     }
 
-    /**
-     * Run shell commands in the system
-     */
-    private function runShellCommand($command): void
+    private function getCommandOptions(): array
     {
-        $process = Process::fromShellCommandline($command);
-
-        $process->setTty(Process::isTtySupported());
-
-        $process->run(function ($type, $buffer) {
-            $this->output->write($buffer);
-        });
-
-        if (! $process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+        $options = [];
+        
+        if ($this->isForce()) {
+            $options['--force'] = true;
         }
+        
+        
+        if ($this->isDev()) {
+            $options['--dev'] = true;
+        }
+        
+        return $options;
     }
 }

@@ -12,7 +12,7 @@ class InstallGitDotFilesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'init:git-dot-files {--force : Overwrite any existing files}';
+    protected $signature = 'init:git-dot-files {--force : Overwrite any existing files} {--dev : Install development versions of packages}';
 
     /**
      * The console command description.
