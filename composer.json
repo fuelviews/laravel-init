@@ -17,8 +17,8 @@
     ],
     "require": {
         "php": "^8.3",
-        "spatie/laravel-package-tools": "^1.16.0",
-        "illuminate/contracts": "^10.0||^11.0||^12.0"
+        "illuminate/contracts": "^10.0||^11.0||^12.0",
+        "spatie/laravel-package-tools": "^1.16.0"
     },
     "require-dev": {
         "laravel/pint": "^1.14",
@@ -28,7 +28,8 @@
         "pestphp/pest-plugin-arch": "^3.0||^2.7",
         "pestphp/pest-plugin-laravel": "^3.2||^2.3",
         "rector/rector": "^2.0",
-        "driftingly/rector-laravel": "^2.0"
+        "driftingly/rector-laravel": "^2.0",
+        "spatie/image-optimizer": "^1.8"
     },
     "autoload": {
         "psr-4": {
@@ -73,7 +74,7 @@
             ]
         },
         "aliases": {
-            "RedirectIfNotFound": "Fuelviews\\Init\\Facades\\Init"
+            "Init": "Fuelviews\\Init\\Facades\\Init"
         }
     },
     "minimum-stability": "dev",

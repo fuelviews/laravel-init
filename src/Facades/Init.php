@@ -11,6 +11,6 @@ class Init extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return \Fuelviews\Init\Init::class;
+        return 'init';
     }
 }
