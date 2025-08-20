@@ -16,11 +16,11 @@ class InstallComposerPackagesCommand extends BaseInitCommand
     public function handle(): int
     {
         $this->info('Installing Composer packages for Laravel...');
-        
+
 
         $this->startTask('Installing Composer packages');
         $success = $this->installComposerPackages();
-        
+
         if ($success) {
             $this->completeTask('Composer packages installed');
             $this->info('✅ Composer packages installation completed successfully!');
@@ -37,7 +37,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
     {
         // Get package versions based on dev flag
         $packageVersions = $this->getPackageVersions();
-        
+
         // Packages with version constraints
         $packagesWithVersions = [
             'fuelviews/laravel-sabhero-wrapper:"' . $packageVersions['fuelviews/laravel-sabhero-wrapper'] . '"',
@@ -111,12 +111,12 @@ class InstallComposerPackagesCommand extends BaseInitCommand
                 'fuelviews/laravel-sitemap' => 'dev-main',
             ];
         }
-        
+
         // Default stable versions
         return [
             'fuelviews/laravel-sabhero-wrapper' => '^0.0',
             'fuelviews/laravel-cloudflare-cache' => '^1.0',
-            'fuelviews/laravel-robots-txt' => '^0.0',
+            'fuelviews/laravel-robots-txt' => '^1.0',
             'fuelviews/laravel-sitemap' => '^0.0',
         ];
     }
@@ -139,7 +139,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
         foreach ($publishCommands as $tag => $description) {
             $this->startTask($description);
             $success = $this->runArtisanCommand('vendor:publish', array_merge(['--tag' => $tag], $force));
-            
+
             if ($success) {
                 $this->completeTask($description);
             } else {
@@ -151,7 +151,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
         // Run sabhero-wrapper install
         $this->startTask('Installing Sabhero wrapper');
         $success = $this->runArtisanCommand('sabhero-wrapper:install');
-        
+
         if ($success) {
             $this->completeTask('Sabhero wrapper installed');
         } else {
@@ -163,7 +163,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
         if (! $this->isStorageLinked()) {
             $this->startTask('Creating storage link');
             $success = $this->ensureStorageLink();
-            
+
             if ($success) {
                 $this->completeTask('Storage link created');
             } else {
@@ -179,7 +179,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
     {
 
         $filePath = base_path('routes/web.php');
-        
+
         if (! File::exists($filePath)) {
             $this->warn('routes/web.php not found, skipping route update');
 
