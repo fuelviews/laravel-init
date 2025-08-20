@@ -73,7 +73,7 @@
             ]
         },
         "aliases": {
-            "RedirectIfNotFound": "Fuelviews\\Init\\Facades\\Init"
+            "Init": "Fuelviews\\Init\\Facades\\Init"
         }
     },
     "minimum-stability": "dev",

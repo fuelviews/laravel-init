@@ -5,7 +5,8 @@ import typography from '@tailwindcss/typography';
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
-        './resources/**/*.{js,vue,blade.php}'
+        './resources/**/*.{js,vue,blade.php}',
+        './vendor/fuelviews/laravel-*/resources/**/*.{js,vue,blade.php}',
     ],
     theme: {
         extend: {
