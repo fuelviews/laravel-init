@@ -1,7 +1,6 @@
 <?php
 
 use Fuelviews\Init\Init;
-use Illuminate\Support\Facades\File;
 
 beforeEach(function () {
     $this->init = new Init();

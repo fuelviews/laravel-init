@@ -92,6 +92,7 @@ class InitServiceProvider extends PackageServiceProvider
         $composerFile = __DIR__.'/../composer.json';
         if (file_exists($composerFile)) {
             $composer = json_decode(file_get_contents($composerFile), true);
+
             return $composer['version'] ?? 'dev-main';
         }
 

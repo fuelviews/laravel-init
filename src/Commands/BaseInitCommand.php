@@ -32,7 +32,6 @@ abstract class BaseInitCommand extends Command
 
     }
 
-
     protected function isForce(): bool
     {
         return $this->option('force') ?? false;
@@ -43,7 +42,6 @@ abstract class BaseInitCommand extends Command
         return $this->option('dev') ?? false;
     }
 
-
     protected function publishConfig(string $configFileName, bool $force = null): bool
     {
         $force = $force ?? $this->isForce();
@@ -53,20 +51,24 @@ abstract class BaseInitCommand extends Command
 
         if (! File::exists($stubPath)) {
             $this->error("Stub file not found: $stubPath");
+
             return false;
         }
 
         if (File::exists($destinationPath) && ! $force) {
             $this->warn("File already exists: $destinationPath (use --force to overwrite)");
+
             return false;
         }
 
         try {
             File::copy($stubPath, $destinationPath);
             $this->info("✓ Published: $configFileName");
+
             return true;
         } catch (\Exception $e) {
             $this->error("Failed to publish $configFileName: " . $e->getMessage());
+
             return false;
         }
     }
@@ -79,6 +81,7 @@ abstract class BaseInitCommand extends Command
 
         if (! File::exists($stubPath)) {
             $this->error("Stub file not found: $stubPath");
+
             return false;
         }
 
@@ -89,15 +92,18 @@ abstract class BaseInitCommand extends Command
 
         if (File::exists($destinationPath) && ! $force) {
             $this->warn("File already exists: $destinationPath (use --force to overwrite)");
+
             return false;
         }
 
         try {
             File::copy($stubPath, $destinationPath);
             $this->info("✓ Published: " . basename($destinationPath));
+
             return true;
         } catch (\Exception $e) {
             $this->error("Failed to publish $stubFile: " . $e->getMessage());
+
             return false;
         }
     }
@@ -105,6 +111,7 @@ abstract class BaseInitCommand extends Command
     protected function getStubPath(string $stubFile): string
     {
         $stubFile = str_ends_with($stubFile, '.stub') ? $stubFile : "$stubFile.stub";
+
         return __DIR__ . "/../../stubs/$stubFile";
     }
 

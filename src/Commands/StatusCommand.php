@@ -76,6 +76,7 @@ class StatusCommand extends BaseInitCommand
         
         if (! File::exists(base_path('package.json'))) {
             $this->warn('  package.json not found');
+
             return;
         }
 
@@ -146,6 +147,7 @@ class StatusCommand extends BaseInitCommand
         
         if (empty($stubs)) {
             $this->warn('  No stub files found');
+
             return;
         }
 

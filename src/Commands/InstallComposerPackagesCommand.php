@@ -24,9 +24,11 @@ class InstallComposerPackagesCommand extends BaseInitCommand
         if ($success) {
             $this->completeTask('Composer packages installed');
             $this->info('✅ Composer packages installation completed successfully!');
+
             return self::SUCCESS;
         } else {
             $this->failTask('Failed to install some packages');
+
             return self::FAILURE;
         }
     }
@@ -104,7 +106,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
             // Development versions - only apply to fuelviews packages
             return [
                 'fuelviews/laravel-sabhero-wrapper' => 'dev-main',
-                'fuelviews/laravel-cloudflare-cache' => 'dev-main', 
+                'fuelviews/laravel-cloudflare-cache' => 'dev-main',
                 'fuelviews/laravel-robots-txt' => 'dev-main',
                 'fuelviews/laravel-sitemap' => 'dev-main',
             ];
@@ -180,6 +182,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
         
         if (! File::exists($filePath)) {
             $this->warn('routes/web.php not found, skipping route update');
+
             return;
         }
 

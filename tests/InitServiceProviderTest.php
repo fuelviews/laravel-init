@@ -1,7 +1,6 @@
 <?php
 
 use Fuelviews\Init\InitServiceProvider;
-use Illuminate\Support\Facades\File;
 
 it('registers init facade correctly', function () {
     expect(app()->bound('init'))->toBeTrue();

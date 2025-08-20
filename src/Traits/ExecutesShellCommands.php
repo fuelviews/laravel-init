@@ -35,6 +35,7 @@ trait ExecutesShellCommands
             }
 
             $this->completeTask('Command executed successfully');
+
             return true;
         } catch (ProcessFailedException $e) {
             $this->failTask('Command failed', $e->getMessage());
@@ -47,6 +48,7 @@ trait ExecutesShellCommands
             return false;
         } catch (\Exception $e) {
             $this->failTask('Command failed', $e->getMessage());
+
             return false;
         }
     }
@@ -66,6 +68,7 @@ trait ExecutesShellCommands
             return $process->getOutput();
         } catch (\Exception $e) {
             $this->error("Failed to execute command: " . $e->getMessage());
+
             return null;
         }
     }
@@ -106,9 +109,11 @@ trait ExecutesShellCommands
 
         try {
             $exitCode = $this->call($command, $arguments);
+
             return $exitCode === 0;
         } catch (\Exception $e) {
             $this->error("Failed to run artisan command: " . $e->getMessage());
+
             return false;
         }
     }
@@ -127,6 +132,7 @@ trait ExecutesShellCommands
             if ($this->output->isVerbose()) {
                 $this->info('Storage link already exists');
             }
+
             return true;
         }
 

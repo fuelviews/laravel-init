@@ -46,9 +46,11 @@ trait ManagesNodePackages
             }
 
             $this->completeTask('Node packages installed');
+
             return true;
         } catch (\Exception $e) {
             $this->failTask('Failed to install Node packages', $e->getMessage());
+
             return false;
         }
     }
@@ -59,6 +61,7 @@ trait ManagesNodePackages
 
         if (! file_exists($packageJsonPath)) {
             $this->warn('package.json file not found.');
+
             return false;
         }
 
@@ -71,6 +74,7 @@ trait ManagesNodePackages
             
             if ($content === $originalContent) {
                 $this->info('package.json is already up to date');
+
                 return true;
             }
 
@@ -80,9 +84,11 @@ trait ManagesNodePackages
             );
 
             $this->info('✓ Updated package.json');
+
             return true;
         } catch (\Exception $e) {
             $this->error('Failed to update package.json: ' . $e->getMessage());
+
             return false;
         }
     }

@@ -39,6 +39,7 @@ class InstallTailwindCssCommand extends BaseInitCommand
             $this->completeTask('TailwindCSS packages installed');
         } else {
             $this->failTask('Failed to install some packages');
+
             return self::FAILURE;
         }
 
@@ -92,6 +93,7 @@ class InstallTailwindCssCommand extends BaseInitCommand
 
         if (empty($toInstall)) {
             $this->info('All TailwindCSS packages are already installed');
+
             return true;
         }
 

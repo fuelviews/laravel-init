@@ -39,6 +39,7 @@ class InstallViteCommand extends BaseInitCommand
             $this->completeTask('Vite packages installed');
         } else {
             $this->failTask('Failed to install some packages');
+
             return self::FAILURE;
         }
 
@@ -74,6 +75,7 @@ class InstallViteCommand extends BaseInitCommand
 
         if (empty($toInstall)) {
             $this->info('All Vite packages are already installed');
+
             return true;
         }
 

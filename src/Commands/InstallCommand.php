@@ -49,6 +49,7 @@ class InstallCommand extends BaseInitCommand
             foreach ($failed as $command) {
                 $this->line("  • $command");
             }
+
             return self::FAILURE;
         }
 

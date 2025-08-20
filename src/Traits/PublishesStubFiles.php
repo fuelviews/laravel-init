@@ -15,6 +15,7 @@ trait PublishesStubFiles
 
         if (! File::exists($stubPath)) {
             $this->error("Stub file not found: $stubPath");
+
             return false;
         }
 
@@ -22,6 +23,7 @@ trait PublishesStubFiles
 
         if (File::exists($destinationPath) && ! $force) {
             $this->warn("File already exists: $destinationPath (use --force to overwrite)");
+
             return false;
         }
 
@@ -32,9 +34,11 @@ trait PublishesStubFiles
         try {
             File::copy($stubPath, $destinationPath);
             $this->info("✓ Published: " . $this->getRelativePath($destinationPath));
+
             return true;
         } catch (\Exception $e) {
             $this->error("Failed to publish $stubFile: " . $e->getMessage());
+
             return false;
         }
     }

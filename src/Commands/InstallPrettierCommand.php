@@ -37,6 +37,7 @@ class InstallPrettierCommand extends BaseInitCommand
         
         if (! $packagesInstalled) {
             $this->failTask('Failed to install some packages');
+
             return self::FAILURE;
         }
 
@@ -100,6 +101,7 @@ class InstallPrettierCommand extends BaseInitCommand
 
         if (empty($toInstall)) {
             $this->info('All Prettier packages are already installed');
+
             return true;
         }
 
