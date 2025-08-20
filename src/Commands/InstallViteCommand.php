@@ -2,37 +2,64 @@
 
 namespace Fuelviews\Init\Commands;
 
-use Illuminate\Console\Command;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use Fuelviews\Init\Traits\ExecutesShellCommands;
+use Fuelviews\Init\Traits\ManagesNodePackages;
+use Fuelviews\Init\Traits\PublishesStubFiles;
 
-class InstallViteCommand extends Command
+class InstallViteCommand extends BaseInitCommand
 {
-    protected $signature = 'init:vite {--force : Overwrite any existing files}';
+    use ExecutesShellCommands;
+    use ManagesNodePackages;
+    use PublishesStubFiles;
+
+    protected $signature = 'init:vite {--force : Overwrite any existing files} {--dry-run : Run in dry-run mode}';
 
     protected $description = 'Install Vite and related configurations for Laravel projects';
 
-    public function handle(): void
+    public function handle(): int
     {
-        $this->publishViteConfig();
-        $this->installVitePackages();
-        $this->info('Vite and related dependencies installed successfully.');
+        $this->info('Installing Vite for Laravel...');
+        
+        if ($this->isDryRun()) {
+            $this->warn('Running in dry-run mode - no changes will be made');
+        }
+
+        // Publish configuration
+        $this->startTask('Publishing Vite configuration');
+        $published = $this->publishViteConfig();
+        
+        if ($published) {
+            $this->completeTask('Vite configuration published');
+        } else {
+            $this->warn('Some files were not published (may already exist)');
+        }
+
+        // Install packages
+        $this->startTask('Installing Vite packages');
+        $packagesInstalled = $this->installVitePackages();
+        
+        if ($packagesInstalled) {
+            $this->completeTask('Vite packages installed');
+        } else {
+            $this->failTask('Failed to install some packages');
+            return self::FAILURE;
+        }
+
+        $this->info('✅ Vite installation completed successfully!');
+        
+        if (! $this->isDryRun()) {
+            $this->info('You can now run "npm run dev" to start the Vite development server');
+        }
+        
+        return self::SUCCESS;
     }
 
-    /**
-     * Publish Vite configuration files
-     */
-    private function publishViteConfig(): void
+    private function publishViteConfig(): bool
     {
-        $force = $this->option('force');
-
-        $this->publishConfig('vite.config.js', $force);
+        return $this->publishStubFile('vite.config.js', 'vite.config.js');
     }
 
-    /**
-     * Install Vite and related development dependencies
-     */
-    private function installVitePackages(): void
+    private function installVitePackages(): bool
     {
         $devDependencies = [
             'dotenv',
@@ -40,41 +67,21 @@ class InstallViteCommand extends Command
             'vite',
         ];
 
-        $this->installNodePackages($devDependencies);
-    }
-
-    /**
-     * Publish the configuration files
-     */
-    protected function publishConfig(string $configFileName, bool $force = false): void
-    {
-        $stubPath = __DIR__."/../../stubs/$configFileName.stub";
-        $destinationPath = base_path($configFileName);
-
-        if ($force || $this->option('force')) {
-            \File::copy($stubPath, $destinationPath);
-            $this->info("$configFileName has been installed or overwritten successfully.");
-        }
-    }
-
-    /**
-     * Install Node.js development packages
-     */
-    private function installNodePackages(array $packageNames): void
-    {
-        $packageInstallString = implode(' ', $packageNames);
-        $command = "npm install $packageInstallString --save-dev";
-
-        $process = Process::fromShellCommandline($command, null, null, STDIN, null);
-        $process->setTty(Process::isTtySupported());
-        $process->run(function ($type, $buffer) {
-            $this->output->write($buffer);
-        });
-
-        if (! $process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+        // Check if packages are already installed
+        $toInstall = [];
+        foreach ($devDependencies as $package) {
+            if (! $this->hasNodePackage($package)) {
+                $toInstall[] = $package;
+            } elseif ($this->output->isVerbose()) {
+                $this->info("Package already installed: $package");
+            }
         }
 
-        $this->info('Node packages installed successfully.');
+        if (empty($toInstall)) {
+            $this->info('All Vite packages are already installed');
+            return true;
+        }
+
+        return $this->installNodePackages($toInstall);
     }
 }

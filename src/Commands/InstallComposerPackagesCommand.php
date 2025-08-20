@@ -27,8 +27,8 @@ class InstallComposerPackagesCommand extends Command
         // Packages with version constraints
         $packagesWithVersions = [
             'fuelviews/laravel-sabhero-wrapper:"^0.0"',
-            'fuelviews/laravel-cloudflare-cache:"^2.0"',
-            'fuelviews/laravel-robots-txt:"^1.0"',
+            'fuelviews/laravel-cloudflare-cache:"^1.0"',
+            'fuelviews/laravel-robots-txt:"^0.0"',
             'fuelviews/laravel-sitemap:"^0.0"',
         ];
 
