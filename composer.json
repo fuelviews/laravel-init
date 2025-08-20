@@ -37,6 +37,7 @@
         "pestphp/pest-plugin-arch": "^3.0||^2.7",
         "pestphp/pest-plugin-laravel": "^3.2||^2.3",
         "rector/rector": "^2.0",
+        "driftingly/rector-laravel": "^2.0",
         "spatie/image-optimizer": "^1.8"
     },
     "autoload": {
