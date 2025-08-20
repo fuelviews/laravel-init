@@ -17,10 +17,6 @@ trait ManagesNodePackages
         $saveFlag = $dev ? '--save-dev' : '--save';
         $command = "npm install $packageInstallString $saveFlag";
 
-        if ($this->isDryRun()) {
-            $this->info("[DRY RUN] Would run: $command");
-            return true;
-        }
 
         $this->startTask('Installing Node packages');
         
@@ -66,10 +62,6 @@ trait ManagesNodePackages
             return false;
         }
 
-        if ($this->isDryRun()) {
-            $this->info('[DRY RUN] Would update package.json');
-            return true;
-        }
 
         try {
             $content = json_decode(file_get_contents($packageJsonPath), true, 512, JSON_THROW_ON_ERROR);

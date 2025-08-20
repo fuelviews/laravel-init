@@ -2,36 +2,85 @@
 
 namespace Fuelviews\Init\Commands;
 
-use Illuminate\Console\Command;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use Fuelviews\Init\Traits\ExecutesShellCommands;
+use Fuelviews\Init\Traits\ManagesNodePackages;
+use Fuelviews\Init\Traits\PublishesStubFiles;
 
-class InstallPrettierCommand extends Command
+class InstallPrettierCommand extends BaseInitCommand
 {
-    protected $signature = 'init:prettier {--force : Overwrite any existing files}';
+    use ExecutesShellCommands;
+    use ManagesNodePackages;
+    use PublishesStubFiles;
+
+    protected $signature = 'init:prettier {--force : Overwrite any existing files} {--dev : Install development versions of packages}';
 
     protected $description = 'Install Prettier and associated plugins for Laravel projects';
 
-    public function handle(): void
+    public function handle(): int
     {
-        $this->publishPrettierConfig();
-        $this->installPrettierPackages();
-        $this->updateNodeScripts();
-        $this->info('Prettier installed successfully.');
+        $this->info('Installing Prettier for Laravel...');
+        
+
+        // Publish configurations
+        $this->startTask('Publishing Prettier configuration files');
+        $published = $this->publishPrettierConfig();
+        
+        if ($published > 0) {
+            $this->completeTask("Published {$published} configuration files");
+        } else {
+            $this->warn('Some config files were not published (may already exist)');
+        }
+
+        // Install packages
+        $this->startTask('Installing Prettier packages');
+        $packagesInstalled = $this->installPrettierPackages();
+        
+        if (! $packagesInstalled) {
+            $this->failTask('Failed to install some packages');
+            return self::FAILURE;
+        }
+
+        // Update package.json scripts
+        $this->startTask('Adding format script to package.json');
+        $scriptsUpdated = $this->updateNodeScripts([
+            'format' => 'npx prettier --write resources/views/',
+        ]);
+
+        if ($scriptsUpdated) {
+            $this->completeTask('Added format script to package.json');
+        }
+
+        $this->info('✅ Prettier installation completed successfully!');
+        
+        $this->info('You can now run "npm run format" to format your Blade templates');
+        
+        return self::SUCCESS;
     }
 
-    private function publishPrettierConfig(): void
+    private function publishPrettierConfig(): int
     {
-        $force = $this->option('force');
+        $published = 0;
+        
+        // Note: These stub files need to be created if they don't exist
+        $configs = [
+            '.prettierrc' => '.prettierrc',
+            '.prettierignore' => '.prettierignore',
+        ];
 
-        $this->publishConfig('.prettierrc', $force);
-        $this->publishConfig('.prettierignore', $force);
+        foreach ($configs as $stub => $destination) {
+            if ($this->stubExists($stub)) {
+                if ($this->publishStubFile($stub, $destination)) {
+                    $published++;
+                }
+            } else {
+                $this->warn("Stub file not found: {$stub}.stub");
+            }
+        }
+        
+        return $published;
     }
 
-    /**
-     * Install Prettier and its related plugins.
-     */
-    private function installPrettierPackages(): void
+    private function installPrettierPackages(): bool
     {
         $devDependencies = [
             'prettier',
@@ -39,73 +88,21 @@ class InstallPrettierCommand extends Command
             'prettier-plugin-tailwindcss',
         ];
 
-        $this->installNodePackages($devDependencies);
-    }
-
-    /**
-     * Add Prettier format script to package.json
-     */
-    private function updateNodeScripts(): void
-    {
-        $this->updateNodeScriptsFile(function ($scripts) {
-            if (! isset($scripts['format'])) {
-                $scripts['format'] = 'npx prettier --write resources/views/';
+        // Check if packages are already installed
+        $toInstall = [];
+        foreach ($devDependencies as $package) {
+            if (! $this->hasNodePackage($package)) {
+                $toInstall[] = $package;
+            } elseif ($this->output->isVerbose()) {
+                $this->info("Package already installed: $package");
             }
-
-            return $scripts;
-        });
-    }
-
-    private function publishConfig(string $configFileName, bool $force = false): void
-    {
-        $stubPath = __DIR__."/../../stubs/$configFileName.stub";
-        $destinationPath = base_path($configFileName);
-
-        if ($force || $this->option('force')) {
-            \File::copy($stubPath, $destinationPath);
-            $this->info("$configFileName has been installed or overwritten successfully.");
-        }
-    }
-
-    private function installNodePackages(array $packageNames): void
-    {
-        $packageInstallString = implode(' ', $packageNames);
-        $command = "npm install $packageInstallString --save-dev";
-
-        $process = Process::fromShellCommandline($command, null, null, STDIN, null);
-        $process->setTty(Process::isTtySupported());
-        $process->run(function ($type, $buffer) {
-            $this->output->write($buffer);
-        });
-
-        if (! $process->isSuccessful()) {
-            throw new ProcessFailedException($process);
         }
 
-        $this->info('Node packages installed successfully.');
-    }
-
-    private function updateNodeScriptsFile(callable $callback): void
-    {
-        $packageJsonPath = base_path('package.json');
-
-        if (! file_exists($packageJsonPath)) {
-            $this->warn('package.json file not found.');
-
-            return;
+        if (empty($toInstall)) {
+            $this->info('All Prettier packages are already installed');
+            return true;
         }
 
-        $content = json_decode(file_get_contents($packageJsonPath), true, 512, JSON_THROW_ON_ERROR);
-
-        $content['scripts'] = $callback(
-            array_key_exists('scripts', $content) ? $content['scripts'] : []
-        );
-
-        file_put_contents(
-            $packageJsonPath,
-            json_encode($content, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT).PHP_EOL
-        );
-
-        $this->info('Updated package.json scripts section.');
+        return $this->installNodePackages($toInstall);
     }
 }

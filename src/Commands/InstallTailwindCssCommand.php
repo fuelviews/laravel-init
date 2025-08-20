@@ -2,37 +2,74 @@
 
 namespace Fuelviews\Init\Commands;
 
-use Illuminate\Console\Command;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use Fuelviews\Init\Traits\ExecutesShellCommands;
+use Fuelviews\Init\Traits\ManagesNodePackages;
+use Fuelviews\Init\Traits\PublishesStubFiles;
 
-class InstallTailwindCssCommand extends Command
+class InstallTailwindCssCommand extends BaseInitCommand
 {
-    protected $signature = 'init:tailwindcss {--force : Overwrite any existing files}: Specify the Tailwind CSS version to install}';
+    use ExecutesShellCommands;
+    use ManagesNodePackages;
+    use PublishesStubFiles;
+
+    protected $signature = 'init:tailwindcss {--force : Overwrite any existing files} {--dev : Install development versions of packages}';
 
     protected $description = 'Install TailwindCSS and related configuration for Laravel projects';
 
-    public function handle(): void
+    public function handle(): int
     {
-        $this->publishTailwindConfig();
-        $this->installTailwindPackages();
-        $this->info('TailwindCSS installed successfully.');
+        $this->info('Installing TailwindCSS for Laravel...');
+        
+
+        // Publish configurations
+        $this->startTask('Publishing TailwindCSS configurations');
+        $published = $this->publishTailwindConfig();
+        
+        if ($published > 0) {
+            $this->completeTask("Published {$published} configuration files");
+        } else {
+            $this->warn('Some files were not published (may already exist)');
+        }
+
+        // Install packages
+        $this->startTask('Installing TailwindCSS packages');
+        $packagesInstalled = $this->installTailwindPackages();
+        
+        if ($packagesInstalled) {
+            $this->completeTask('TailwindCSS packages installed');
+        } else {
+            $this->failTask('Failed to install some packages');
+            return self::FAILURE;
+        }
+
+        $this->info('✅ TailwindCSS installation completed successfully!');
+        
+        $this->info('You can now use Tailwind classes in your Blade templates');
+        $this->info('Run "npm run dev" to compile your CSS');
+        
+        return self::SUCCESS;
     }
 
-    private function publishTailwindConfig(): void
+    private function publishTailwindConfig(): int
     {
-        $force = $this->option('force');
+        $published = 0;
+        
+        $configs = [
+            'tailwind.config.js' => 'tailwind.config.js',
+            'postcss.config.js' => 'postcss.config.js',
+            'css/app.css' => 'resources/css/app.css',
+        ];
 
-        $this->publishConfig('tailwind.config.js', $force);
-        $this->publishConfig('postcss.config.js', $force);
-
-        $this->publishAppCss($force);
+        foreach ($configs as $stub => $destination) {
+            if ($this->publishStubFile($stub, $destination)) {
+                $published++;
+            }
+        }
+        
+        return $published;
     }
 
-    /**
-     * Install TailwindCSS and related PostCSS packages.
-     */
-    private function installTailwindPackages(): void
+    private function installTailwindPackages(): bool
     {
         $devDependencies = [
             '@tailwindcss/forms',
@@ -42,50 +79,22 @@ class InstallTailwindCssCommand extends Command
             'tailwindcss@3.4.17',
         ];
 
-        $this->installNodePackages($devDependencies);
-    }
-
-    protected function publishConfig(string $configFileName, bool $force = false): void
-    {
-        $stubPath = __DIR__."/../../stubs/$configFileName.stub";
-        $destinationPath = base_path($configFileName);
-
-        if ($force || $this->option('force')) {
-            \File::copy($stubPath, $destinationPath);
-            $this->info("$configFileName has been installed or overwritten successfully.");
-        }
-    }
-
-    protected function publishAppCss(bool $force): void
-    {
-        $stubPath = __DIR__.'/../../stubs/css/app.css.stub';
-        $destinationPath = resource_path('css/app.css');
-
-        if (! \File::exists(dirname($destinationPath))) {
-            \File::makeDirectory(dirname($destinationPath), 0755, true);
+        // Check if packages are already installed
+        $toInstall = [];
+        foreach ($devDependencies as $package) {
+            $packageName = explode('@', $package)[0]; // Handle versioned packages
+            if (! $this->hasNodePackage($packageName)) {
+                $toInstall[] = $package;
+            } elseif ($this->output->isVerbose()) {
+                $this->info("Package already installed: $packageName");
+            }
         }
 
-        if ($force || $this->option('force')) {
-            \File::copy($stubPath, $destinationPath);
-            $this->info('css/app.css file has been installed or overwritten successfully.');
-        }
-    }
-
-    private function installNodePackages(array $packageNames): void
-    {
-        $packageInstallString = implode(' ', $packageNames);
-        $command = "npm install $packageInstallString --save-dev";
-
-        $process = Process::fromShellCommandline($command, null, null, STDIN, null);
-        $process->setTty(Process::isTtySupported());
-        $process->run(function ($type, $buffer) {
-            $this->output->write($buffer);
-        });
-
-        if (! $process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+        if (empty($toInstall)) {
+            $this->info('All TailwindCSS packages are already installed');
+            return true;
         }
 
-        $this->info('Node packages installed successfully.');
+        return $this->installNodePackages($toInstall);
     }
 }

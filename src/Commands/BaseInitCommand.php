@@ -20,25 +20,29 @@ abstract class BaseInitCommand extends Command
             )
         );
 
+
         $this->getDefinition()->addOption(
             new \Symfony\Component\Console\Input\InputOption(
-                'dry-run',
+                'dev',
                 null,
                 \Symfony\Component\Console\Input\InputOption::VALUE_NONE,
-                'Run the command in dry-run mode (preview changes without applying them)'
+                'Install development versions of packages (dev-main, dev-master, etc.)'
             )
         );
+
     }
 
-    protected function isDryRun(): bool
-    {
-        return $this->option('dry-run') ?? false;
-    }
 
     protected function isForce(): bool
     {
         return $this->option('force') ?? false;
     }
+
+    protected function isDev(): bool
+    {
+        return $this->option('dev') ?? false;
+    }
+
 
     protected function publishConfig(string $configFileName, bool $force = null): bool
     {
@@ -46,10 +50,6 @@ abstract class BaseInitCommand extends Command
         $stubPath = $this->getStubPath($configFileName);
         $destinationPath = base_path($configFileName);
 
-        if ($this->isDryRun()) {
-            $this->info("[DRY RUN] Would publish: $configFileName to $destinationPath");
-            return true;
-        }
 
         if (! File::exists($stubPath)) {
             $this->error("Stub file not found: $stubPath");
@@ -76,10 +76,6 @@ abstract class BaseInitCommand extends Command
         $force = $force ?? $this->isForce();
         $stubPath = $this->getStubPath($stubFile);
 
-        if ($this->isDryRun()) {
-            $this->info("[DRY RUN] Would publish: $stubFile to $destinationPath");
-            return true;
-        }
 
         if (! File::exists($stubPath)) {
             $this->error("Stub file not found: $stubPath");
@@ -121,9 +117,7 @@ abstract class BaseInitCommand extends Command
 
     protected function completeTask(string $description): void
     {
-        if (! $this->isDryRun()) {
-            $this->info("✓ $description");
-        }
+        $this->info("✓ $description");
     }
 
     protected function failTask(string $description, string $error = null): void

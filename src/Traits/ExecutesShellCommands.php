@@ -11,10 +11,6 @@ trait ExecutesShellCommands
 
     protected function runShellCommand(string $command, int $timeout = null): bool
     {
-        if ($this->isDryRun()) {
-            $this->info("[DRY RUN] Would run: $command");
-            return true;
-        }
 
         $this->startTask("Executing: $command");
 
@@ -57,10 +53,6 @@ trait ExecutesShellCommands
 
     protected function runShellCommandWithOutput(string $command, int $timeout = null): ?string
     {
-        if ($this->isDryRun()) {
-            $this->info("[DRY RUN] Would run: $command");
-            return '';
-        }
 
         try {
             $process = Process::fromShellCommandline($command);
@@ -95,6 +87,11 @@ trait ExecutesShellCommands
     {
         $fullCommand = "composer $command";
         
+        // Add dev preferences if in dev mode
+        if ($this->isDev()) {
+            $fullCommand .= " --prefer-source";
+        }
+        
         if ($this->output->isQuiet()) {
             $fullCommand .= ' --quiet';
         } elseif ($this->output->isVerbose()) {
@@ -106,10 +103,6 @@ trait ExecutesShellCommands
 
     protected function runArtisanCommand(string $command, array $arguments = []): bool
     {
-        if ($this->isDryRun()) {
-            $this->info("[DRY RUN] Would run: php artisan $command");
-            return true;
-        }
 
         try {
             $exitCode = $this->call($command, $arguments);

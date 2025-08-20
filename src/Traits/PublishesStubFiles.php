@@ -12,10 +12,6 @@ trait PublishesStubFiles
         $stubPath = $this->resolveStubPath($stubFile);
         $destinationPath = $this->resolveDestinationPath($destination);
 
-        if ($this->isDryRun()) {
-            $this->info("[DRY RUN] Would publish: $stubFile to $destinationPath");
-            return true;
-        }
 
         if (! File::exists($stubPath)) {
             $this->error("Stub file not found: $stubPath");

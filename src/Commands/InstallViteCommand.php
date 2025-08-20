@@ -12,7 +12,7 @@ class InstallViteCommand extends BaseInitCommand
     use ManagesNodePackages;
     use PublishesStubFiles;
 
-    protected $signature = 'init:vite {--force : Overwrite any existing files} {--dry-run : Run in dry-run mode}';
+    protected $signature = 'init:vite {--force : Overwrite any existing files} {--dev : Install development versions of packages}';
 
     protected $description = 'Install Vite and related configurations for Laravel projects';
 
@@ -20,9 +20,6 @@ class InstallViteCommand extends BaseInitCommand
     {
         $this->info('Installing Vite for Laravel...');
         
-        if ($this->isDryRun()) {
-            $this->warn('Running in dry-run mode - no changes will be made');
-        }
 
         // Publish configuration
         $this->startTask('Publishing Vite configuration');
@@ -47,9 +44,7 @@ class InstallViteCommand extends BaseInitCommand
 
         $this->info('✅ Vite installation completed successfully!');
         
-        if (! $this->isDryRun()) {
-            $this->info('You can now run "npm run dev" to start the Vite development server');
-        }
+        $this->info('You can now run "npm run dev" to start the Vite development server');
         
         return self::SUCCESS;
     }
