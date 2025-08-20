@@ -34,3 +34,4 @@ error_log
 /storage
 /.junie
 .mcp.json
+.php-cs-fixer.cache
