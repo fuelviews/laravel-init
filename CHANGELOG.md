@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v2.0.2 - 2025-08-20
+
+### What's Changed
+
+* Bump fuelviews install deps by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/38
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v2.0.1...v2.0.2
+
 ## v2.0.1 - 2025-08-20
 
 ### What's Changed
