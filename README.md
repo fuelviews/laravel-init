@@ -1,6 +1,8 @@
 # Laravel Init Package
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/fuelviews/laravel-init.svg?style=flat-square)](https://packagist.org/packages/fuelviews/laravel-init)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/fuelviews/laravel-init/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/fuelviews/laravel-init/actions/workflows/run-tests.yml?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/fuelviews/laravel-init/php-cs-fixer.yml?label=code%20style&style=flat-square)](https://github.com/fuelviews/laravel-init/actions/workflows/php-cs-fixer.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/fuelviews/laravel-init.svg?style=flat-square)](https://packagist.org/packages/fuelviews/laravel-init)
 [![PHP Version](https://img.shields.io/badge/PHP-^8.3-blue.svg?style=flat-square)](https://php.net)
 [![Laravel Version](https://img.shields.io/badge/Laravel-^10|^11|^12-red.svg?style=flat-square)](https://laravel.com)
