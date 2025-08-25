@@ -154,11 +154,12 @@ class InstallComposerPackagesCommand extends BaseInitCommand
             }
         }
 
-        // Run sabhero-wrapper install
+        // Install sabhero-wrapper config and migrations
         $this->startTask('Installing Sabhero wrapper');
-        $success = $this->runArtisanCommand('sabhero-wrapper:install');
+        $configSuccess = $this->runArtisanCommand('vendor:publish', ['--tag' => 'sabhero-wrapper-config', '--force' => true]);
+        $migrationSuccess = $this->runArtisanCommand('vendor:publish', ['--tag' => 'sabhero-wrapper-migrations', '--force' => true]);
 
-        if ($success) {
+        if ($configSuccess && $migrationSuccess) {
             $this->completeTask('Sabhero wrapper installed');
             
             // Publish welcome.blade.php from sabhero-wrapper if force flag is set
