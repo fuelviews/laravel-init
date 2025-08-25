@@ -128,7 +128,7 @@ class InstallTailwindCssCommand extends BaseInitCommand
                 }
             }
             
-            if (!empty($removed)) {
+            if (! empty($removed)) {
                 $this->info('Removed incompatible packages: ' . implode(', ', $removed));
             }
             
