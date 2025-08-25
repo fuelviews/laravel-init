@@ -31,7 +31,6 @@ php.ini
 error_log
 .DS_Store
 */.DS_Store
-/storage
 /.junie
 .mcp.json
 .php-cs-fixer.cache

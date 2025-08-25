@@ -92,6 +92,12 @@ class InstallComposerPackagesCommand extends BaseInitCommand
             $allSuccess = $this->runPackageInstallCommands();
         }
 
+        // Run composer dump-autoload to update autoload files after publishing
+        if ($allSuccess) {
+            $this->info('Updating composer autoload files...');
+            $this->runComposerCommand('dump-autoload --optimize');
+        }
+
         // Update routes file
         if ($allSuccess) {
             $this->updateWelcomeRoute();
@@ -154,6 +160,22 @@ class InstallComposerPackagesCommand extends BaseInitCommand
 
         if ($success) {
             $this->completeTask('Sabhero wrapper installed');
+            
+            // Publish welcome.blade.php from sabhero-wrapper if force flag is set
+            if ($this->isForce()) {
+                $this->startTask('Publishing Sabhero wrapper welcome view');
+                $publishSuccess = $this->runArtisanCommand('vendor:publish', [
+                    '--tag' => 'init-sabhero-welcome',
+                    '--force' => true
+                ]);
+                
+                if ($publishSuccess) {
+                    $this->completeTask('Sabhero wrapper welcome view published');
+                } else {
+                    $this->failTask('Failed to publish Sabhero wrapper welcome view');
+                    // Don't fail the entire process for this optional step
+                }
+            }
         } else {
             $this->failTask('Sabhero wrapper installation failed');
             $allSuccess = false;
