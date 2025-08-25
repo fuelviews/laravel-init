@@ -75,6 +75,14 @@ class InitServiceProvider extends PackageServiceProvider
         $this->publishes([
             __DIR__.'/../stubs/css/app.css.stub' => resource_path('css/app.css'),
         ], 'init-styles');
+        
+        // Sabhero wrapper welcome view - dynamically check if package exists
+        $sabheroWelcomePath = base_path('vendor/fuelviews/laravel-sabhero-wrapper/resources/views/welcome.blade.php');
+        if (file_exists($sabheroWelcomePath)) {
+            $this->publishes([
+                $sabheroWelcomePath => resource_path('views/welcome.blade.php'),
+            ], 'init-sabhero-welcome');
+        }
     }
 
     protected function registerAboutCommand(): void
