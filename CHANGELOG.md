@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v2.0.4 - 2025-08-25
+
+### What's Changed
+
+* Refactor Sabhero wrapper installation to separately publish config and migrations; enhance TailwindCSS installation by removing incompatible dependencies, supporting forced reinstall, and improving package version handling. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/40
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v2.0.3...v2.0.4
+
 ## v2.0.3 - 2025-08-25
 
 ### What's Changed
