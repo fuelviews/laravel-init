@@ -166,7 +166,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
                 $this->startTask('Publishing Sabhero wrapper welcome view');
                 $publishSuccess = $this->runArtisanCommand('vendor:publish', [
                     '--tag' => 'init-sabhero-welcome',
-                    '--force' => true
+                    '--force' => true,
                 ]);
                 
                 if ($publishSuccess) {
