@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v2.0.3 - 2025-08-25
+
+### What's Changed
+
+* Add composer dump-autoload step after package installation and conditionally publish Sabhero wrapper welcome view with force option; also dynamically register Sabhero welcome view publishable if package exists. Remove /storage from stub .gitignore to avoid ignoring storage directory. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/39
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v2.0.2...v2.0.3
+
 ## v2.0.2 - 2025-08-20
 
 ### What's Changed
