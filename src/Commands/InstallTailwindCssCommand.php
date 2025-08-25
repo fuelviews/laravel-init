@@ -19,12 +19,12 @@ class InstallTailwindCssCommand extends BaseInitCommand
     public function handle(): int
     {
         $this->info('Installing TailwindCSS for Laravel...');
-        
+
 
         // Publish configurations
         $this->startTask('Publishing TailwindCSS configurations');
         $published = $this->publishTailwindConfig();
-        
+
         if ($published > 0) {
             $this->completeTask("Published {$published} configuration files");
         } else {
@@ -34,7 +34,7 @@ class InstallTailwindCssCommand extends BaseInitCommand
         // Install packages
         $this->startTask('Installing TailwindCSS packages');
         $packagesInstalled = $this->installTailwindPackages();
-        
+
         if ($packagesInstalled) {
             $this->completeTask('TailwindCSS packages installed');
         } else {
@@ -44,17 +44,17 @@ class InstallTailwindCssCommand extends BaseInitCommand
         }
 
         $this->info('✅ TailwindCSS installation completed successfully!');
-        
+
         $this->info('You can now use Tailwind classes in your Blade templates');
         $this->info('Run "npm run dev" to compile your CSS');
-        
+
         return self::SUCCESS;
     }
 
     private function publishTailwindConfig(): int
     {
         $published = 0;
-        
+
         $configs = [
             'tailwind.config.js' => 'tailwind.config.js',
             'postcss.config.js' => 'postcss.config.js',
@@ -66,7 +66,7 @@ class InstallTailwindCssCommand extends BaseInitCommand
                 $published++;
             }
         }
-        
+
         return $published;
     }
 
@@ -77,26 +77,62 @@ class InstallTailwindCssCommand extends BaseInitCommand
             '@tailwindcss/typography',
             'autoprefixer',
             'postcss',
-            'tailwindcss@3.4.17',
+            'tailwindcss@^3.4',
         ];
 
-        // Check if packages are already installed
+        // Remove incompatible dependencies
+        $this->removeIncompatibleDependencies();
+
+        // Check if packages need to be installed or updated
         $toInstall = [];
-        foreach ($devDependencies as $package) {
-            $packageName = explode('@', $package)[0]; // Handle versioned packages
-            if (! $this->hasNodePackage($packageName)) {
-                $toInstall[] = $package;
-            } elseif ($this->output->isVerbose()) {
-                $this->info("Package already installed: $packageName");
+        
+        if ($this->isForce()) {
+            // When --force is used, reinstall all packages to ensure correct versions
+            $toInstall = $devDependencies;
+        } else {
+            // Only install packages that are not already installed
+            foreach ($devDependencies as $package) {
+                $packageName = explode('@', $package)[0]; // Handle versioned packages
+                if (! $this->hasNodePackage($packageName)) {
+                    $toInstall[] = $package;
+                } elseif ($this->output->isVerbose()) {
+                    $this->info("Package already installed: $packageName");
+                }
+            }
+
+            if (empty($toInstall)) {
+                $this->info('All TailwindCSS packages are already installed');
+
+                return true;
             }
         }
 
-        if (empty($toInstall)) {
-            $this->info('All TailwindCSS packages are already installed');
-
-            return true;
-        }
-
         return $this->installNodePackages($toInstall);
+    }
+
+    private function removeIncompatibleDependencies(): void
+    {
+        $incompatiblePackages = ['@tailwindcss/vite'];
+        
+        $this->updatePackageJson(function ($content) use ($incompatiblePackages) {
+            $removed = [];
+            
+            foreach ($incompatiblePackages as $package) {
+                if (isset($content['devDependencies'][$package])) {
+                    unset($content['devDependencies'][$package]);
+                    $removed[] = $package;
+                }
+                if (isset($content['dependencies'][$package])) {
+                    unset($content['dependencies'][$package]);
+                    $removed[] = $package;
+                }
+            }
+            
+            if (!empty($removed)) {
+                $this->info('Removed incompatible packages: ' . implode(', ', $removed));
+            }
+            
+            return $content;
+        });
     }
 }
