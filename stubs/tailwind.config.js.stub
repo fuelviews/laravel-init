@@ -8,6 +8,7 @@ export default {
         './resources/**/*.{js,vue,blade.php}',
         './vendor/fuelviews/laravel-*/resources/**/*.{js,vue,blade.php}',
     ],
+    darkMode: 'class',
     theme: {
         extend: {
             fontFamily: {
