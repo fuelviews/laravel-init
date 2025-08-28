@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v2.0.5 - 2025-08-28
+
+### What's Changed
+
+* Enable dark mode support by adding the 'darkMode' configuration set to 'class' in the Tailwind CSS stub. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/41
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v2.0.4...v2.0.5
+
 ## v2.0.4 - 2025-08-25
 
 ### What's Changed
