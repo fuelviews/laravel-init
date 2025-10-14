@@ -52,6 +52,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
             'ralphjsmit/laravel-glide',
             'livewire/livewire',
             'spatie/laravel-google-fonts',
+            'spatie/laravel-googletagmanager',
         ];
 
         $packagesDev = [
@@ -140,11 +141,21 @@ class InstallComposerPackagesCommand extends BaseInitCommand
             'seo-migrations' => 'Publishing SEO migrations',
             'seo-config' => 'Publishing SEO config',
             'google-fonts-config' => 'Publishing Google Fonts config',
+            'googletagmanager' => 'Publishing Google Tag Manager config',
         ];
 
         foreach ($publishCommands as $tag => $description) {
             $this->startTask($description);
-            $success = $this->runArtisanCommand('vendor:publish', array_merge(['--tag' => $tag], $force));
+
+            // Google Tag Manager uses generic 'config' tag, so we need provider-based publishing
+            if ($tag === 'googletagmanager') {
+                $success = $this->runArtisanCommand('vendor:publish', array_merge([
+                    '--provider' => 'Spatie\GoogleTagManager\GoogleTagManagerServiceProvider',
+                    '--tag' => 'config',
+                ], $force));
+            } else {
+                $success = $this->runArtisanCommand('vendor:publish', array_merge(['--tag' => $tag], $force));
+            }
 
             if ($success) {
                 $this->completeTask($description);
