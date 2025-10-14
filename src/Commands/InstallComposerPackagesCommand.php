@@ -121,7 +121,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
 
         // Default stable versions
         return [
-            'fuelviews/laravel-sabhero-wrapper' => '^1.0',
+            'fuelviews/laravel-sabhero-wrapper' => '^2.0',
             'fuelviews/laravel-cloudflare-cache' => '^1.0',
             'fuelviews/laravel-robots-txt' => '^1.0',
             'fuelviews/laravel-sitemap' => '^1.0',
@@ -172,7 +172,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
 
         if ($configSuccess && $migrationSuccess) {
             $this->completeTask('Sabhero wrapper installed');
-            
+
             // Publish welcome.blade.php from sabhero-wrapper if force flag is set
             if ($this->isForce()) {
                 $this->startTask('Publishing Sabhero wrapper welcome view');
@@ -180,7 +180,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
                     '--tag' => 'init-sabhero-welcome',
                     '--force' => true,
                 ]);
-                
+
                 if ($publishSuccess) {
                     $this->completeTask('Sabhero wrapper welcome view published');
                 } else {
