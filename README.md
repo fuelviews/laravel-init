@@ -21,7 +21,7 @@ A comprehensive Laravel initialization toolkit that streamlines the setup of Lar
 Install the package via Composer:
 
 ```bash
-composer require --dev fuelviews/laravel-init
+cd test
 ```
 
 ## Quick Start
@@ -133,10 +133,10 @@ php artisan init:status
 ```
 
 This provides a comprehensive report showing:
-- ✅ Installed packages and versions
-- ✅ Configuration file status  
-- ✅ Node package installation
-- ✅ Available stub files
+- ✓Installed packages and versions
+- ✓Configuration file status  
+- ✓Node package installation
+- ✓Available stub files
 
 ### Image Optimization
 

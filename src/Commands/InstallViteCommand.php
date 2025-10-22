@@ -19,12 +19,12 @@ class InstallViteCommand extends BaseInitCommand
     public function handle(): int
     {
         $this->info('Installing Vite for Laravel...');
-        
+
 
         // Publish configuration
         $this->startTask('Publishing Vite configuration');
         $published = $this->publishViteConfig();
-        
+
         if ($published) {
             $this->completeTask('Vite configuration published');
         } else {
@@ -34,7 +34,7 @@ class InstallViteCommand extends BaseInitCommand
         // Install packages
         $this->startTask('Installing Vite packages');
         $packagesInstalled = $this->installVitePackages();
-        
+
         if ($packagesInstalled) {
             $this->completeTask('Vite packages installed');
         } else {
@@ -43,10 +43,10 @@ class InstallViteCommand extends BaseInitCommand
             return self::FAILURE;
         }
 
-        $this->info('✅ Vite installation completed successfully!');
-        
+        $this->info('✓ Vite installation completed successfully!');
+
         $this->info('You can now run "npm run dev" to start the Vite development server');
-        
+
         return self::SUCCESS;
     }
 

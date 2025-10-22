@@ -32,10 +32,10 @@ class InstallCommand extends BaseInitCommand
 
         foreach ($commands as $command => $description) {
             $this->startTask($description);
-            
+
 
             $exitCode = $this->call($command, $options);
-            
+
             if ($exitCode === 0) {
                 $this->completeTask($description);
             } else {
@@ -60,7 +60,7 @@ class InstallCommand extends BaseInitCommand
         // Run migrations
         $this->startTask('Running database migrations');
         $migrationsSuccess = $this->runArtisanCommand('migrate', $options);
-        
+
         if ($migrationsSuccess) {
             $this->completeTask('Database migrations completed');
         } else {
@@ -75,7 +75,7 @@ class InstallCommand extends BaseInitCommand
         // Build frontend assets
         $this->startTask('Building frontend assets');
         $buildSuccess = $this->runShellCommand('npm run build');
-        
+
         if ($buildSuccess) {
             $this->completeTask('Frontend assets built successfully');
         } else {
@@ -83,30 +83,30 @@ class InstallCommand extends BaseInitCommand
         }
 
         $this->newLine();
-        $this->info('✅ Laravel Init installation completed successfully!');
+        $this->info('✓ Laravel Init installation completed successfully!');
         $this->newLine();
-        
+
         $this->info('Next steps:');
         $this->line('  • Run "php artisan init:status" to check installation status');
         $this->line('  • Run "npm run dev" to start the development server');
         $this->line('  • Check your .env file for any additional configuration');
-        
+
         return self::SUCCESS;
     }
 
     private function getCommandOptions(): array
     {
         $options = [];
-        
+
         if ($this->isForce()) {
             $options['--force'] = true;
         }
-        
-        
+
+
         if ($this->isDev()) {
             $options['--dev'] = true;
         }
-        
+
         return $options;
     }
 }
