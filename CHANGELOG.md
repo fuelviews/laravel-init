@@ -2,6 +2,16 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v2.0.6 - 2025-10-14
+
+### What's Changed
+
+* Bump platisd/openai-pr-description from 1.4.0 to 1.5.0 by @dependabot[bot] in https://github.com/fuelviews/laravel-init/pull/42
+* Bump anothrNick/github-tag-action from 1.73.0 to 1.75.0 by @dependabot[bot] in https://github.com/fuelviews/laravel-init/pull/44
+* Add spatie/laravel-googletagmanager package to composer install command and handle its config publishing with provider-based vendor:publish; update .gitignore to exclude /public/build and include herd.yml. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/45
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v2.0.5...v2.0.6
+
 ## v2.0.5 - 2025-08-28
 
 ### What's Changed

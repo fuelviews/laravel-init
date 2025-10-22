@@ -52,6 +52,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
             'ralphjsmit/laravel-glide',
             'livewire/livewire',
             'spatie/laravel-google-fonts',
+            'spatie/laravel-googletagmanager',
         ];
 
         $packagesDev = [
@@ -120,7 +121,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
 
         // Default stable versions
         return [
-            'fuelviews/laravel-sabhero-wrapper' => '^1.0',
+            'fuelviews/laravel-sabhero-wrapper' => '^2.0',
             'fuelviews/laravel-cloudflare-cache' => '^1.0',
             'fuelviews/laravel-robots-txt' => '^1.0',
             'fuelviews/laravel-sitemap' => '^1.0',
@@ -140,11 +141,21 @@ class InstallComposerPackagesCommand extends BaseInitCommand
             'seo-migrations' => 'Publishing SEO migrations',
             'seo-config' => 'Publishing SEO config',
             'google-fonts-config' => 'Publishing Google Fonts config',
+            'googletagmanager' => 'Publishing Google Tag Manager config',
         ];
 
         foreach ($publishCommands as $tag => $description) {
             $this->startTask($description);
-            $success = $this->runArtisanCommand('vendor:publish', array_merge(['--tag' => $tag], $force));
+
+            // Google Tag Manager uses generic 'config' tag, so we need provider-based publishing
+            if ($tag === 'googletagmanager') {
+                $success = $this->runArtisanCommand('vendor:publish', array_merge([
+                    '--provider' => 'Spatie\GoogleTagManager\GoogleTagManagerServiceProvider',
+                    '--tag' => 'config',
+                ], $force));
+            } else {
+                $success = $this->runArtisanCommand('vendor:publish', array_merge(['--tag' => $tag], $force));
+            }
 
             if ($success) {
                 $this->completeTask($description);
@@ -161,7 +172,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
 
         if ($configSuccess && $migrationSuccess) {
             $this->completeTask('Sabhero wrapper installed');
-            
+
             // Publish welcome.blade.php from sabhero-wrapper if force flag is set
             if ($this->isForce()) {
                 $this->startTask('Publishing Sabhero wrapper welcome view');
@@ -169,7 +180,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
                     '--tag' => 'init-sabhero-welcome',
                     '--force' => true,
                 ]);
-                
+
                 if ($publishSuccess) {
                     $this->completeTask('Sabhero wrapper welcome view published');
                 } else {
