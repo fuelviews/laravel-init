@@ -23,7 +23,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
 
         if ($success) {
             $this->completeTask('Composer packages installed');
-            $this->info('✅ Composer packages installation completed successfully!');
+            $this->info('✓ Composer packages installation completed successfully!');
 
             return self::SUCCESS;
         } else {
@@ -88,15 +88,24 @@ class InstallComposerPackagesCommand extends BaseInitCommand
             }
         }
 
-        // Run package-specific install commands
-        if ($allSuccess) {
-            $allSuccess = $this->runPackageInstallCommands();
-        }
-
-        // Run composer dump-autoload to update autoload files after publishing
+        // Run composer dump-autoload to update autoload files before publishing
+        // This ensures newly installed service providers are discoverable
         if ($allSuccess) {
             $this->info('Updating composer autoload files...');
             $this->runComposerCommand('dump-autoload --optimize');
+
+            // Clear all Laravel caches to ensure new service providers are loaded
+            // This is critical for vendor:publish to discover newly installed packages
+            $this->info('Clearing Laravel caches to register new service providers...');
+            $this->runArtisanCommand('config:clear');
+            $this->runArtisanCommand('cache:clear');
+            $this->runArtisanCommand('clear-compiled');
+            $this->runArtisanCommand('package:discover');
+        }
+
+        // Run package-specific install commands
+        if ($allSuccess) {
+            $allSuccess = $this->runPackageInstallCommands();
         }
 
         // Update routes file
@@ -121,7 +130,7 @@ class InstallComposerPackagesCommand extends BaseInitCommand
 
         // Default stable versions
         return [
-            'fuelviews/laravel-sabhero-wrapper' => '^2.0',
+            'fuelviews/laravel-sabhero-wrapper' => '^2.1',
             'fuelviews/laravel-cloudflare-cache' => '^1.0',
             'fuelviews/laravel-robots-txt' => '^1.0',
             'fuelviews/laravel-sitemap' => '^1.0',

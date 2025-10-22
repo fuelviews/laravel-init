@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-init` will be documented in this file.
 
+## v2.0.7 - 2025-10-22
+
+### What's Changed
+
+* Bump actions/checkout from 4 to 5 by @dependabot[bot] in https://github.com/fuelviews/laravel-init/pull/43
+* Fix installation instructions and update success message icons; improve package installation by adding composer autoload dump and cache clearing to ensure new service providers are registered; update package version constraints; clean up whitespace and remove incompatible Tailwind dependencies; update .gitignore and Tailwind config stub for correct paths and entries. by @thejmitchener in https://github.com/fuelviews/laravel-init/pull/46
+
+**Full Changelog**: https://github.com/fuelviews/laravel-init/compare/v2.0.6...v2.0.7
+
 ## v2.0.6 - 2025-10-14
 
 ### What's Changed

@@ -1,6 +1,7 @@
 .idea
 .phpunit.cache
 /build
+/public/build
 coverage
 docs
 phpunit.xml
@@ -34,3 +35,7 @@ error_log
 /.junie
 .mcp.json
 .php-cs-fixer.cache
+boost.json
+mcp.json
+/.claude/settings.local.json
+/storage/media-library/temp/

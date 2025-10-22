@@ -19,12 +19,12 @@ class InstallPrettierCommand extends BaseInitCommand
     public function handle(): int
     {
         $this->info('Installing Prettier for Laravel...');
-        
+
 
         // Publish configurations
         $this->startTask('Publishing Prettier configuration files');
         $published = $this->publishPrettierConfig();
-        
+
         if ($published > 0) {
             $this->completeTask("Published {$published} configuration files");
         } else {
@@ -34,7 +34,7 @@ class InstallPrettierCommand extends BaseInitCommand
         // Install packages
         $this->startTask('Installing Prettier packages');
         $packagesInstalled = $this->installPrettierPackages();
-        
+
         if (! $packagesInstalled) {
             $this->failTask('Failed to install some packages');
 
@@ -51,17 +51,17 @@ class InstallPrettierCommand extends BaseInitCommand
             $this->completeTask('Added format script to package.json');
         }
 
-        $this->info('✅ Prettier installation completed successfully!');
-        
+        $this->info('✓ Prettier installation completed successfully!');
+
         $this->info('You can now run "npm run format" to format your Blade templates');
-        
+
         return self::SUCCESS;
     }
 
     private function publishPrettierConfig(): int
     {
         $published = 0;
-        
+
         // Note: These stub files need to be created if they don't exist
         $configs = [
             '.prettierrc' => '.prettierrc',
@@ -77,7 +77,7 @@ class InstallPrettierCommand extends BaseInitCommand
                 $this->warn("Stub file not found: {$stub}.stub");
             }
         }
-        
+
         return $published;
     }
 

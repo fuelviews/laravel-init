@@ -43,7 +43,7 @@ class InstallTailwindCssCommand extends BaseInitCommand
             return self::FAILURE;
         }
 
-        $this->info('✅ TailwindCSS installation completed successfully!');
+        $this->info('✓ TailwindCSS installation completed successfully!');
 
         $this->info('You can now use Tailwind classes in your Blade templates');
         $this->info('Run "npm run dev" to compile your CSS');
@@ -85,7 +85,7 @@ class InstallTailwindCssCommand extends BaseInitCommand
 
         // Check if packages need to be installed or updated
         $toInstall = [];
-        
+
         if ($this->isForce()) {
             // When --force is used, reinstall all packages to ensure correct versions
             $toInstall = $devDependencies;
@@ -113,10 +113,10 @@ class InstallTailwindCssCommand extends BaseInitCommand
     private function removeIncompatibleDependencies(): void
     {
         $incompatiblePackages = ['@tailwindcss/vite'];
-        
+
         $this->updatePackageJson(function ($content) use ($incompatiblePackages) {
             $removed = [];
-            
+
             foreach ($incompatiblePackages as $package) {
                 if (isset($content['devDependencies'][$package])) {
                     unset($content['devDependencies'][$package]);
@@ -127,11 +127,11 @@ class InstallTailwindCssCommand extends BaseInitCommand
                     $removed[] = $package;
                 }
             }
-            
+
             if (! empty($removed)) {
                 $this->info('Removed incompatible packages: ' . implode(', ', $removed));
             }
-            
+
             return $content;
         });
     }
